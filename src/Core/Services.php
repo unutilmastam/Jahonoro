@@ -8,7 +8,13 @@ use App\Auth\InitDataVerifier;
 use App\Auth\MembershipService;
 use App\Auth\SessionService;
 use App\Repositories\AuditRepo;
+use App\Repositories\EventRepo;
+use App\Repositories\PaymentRepo;
+use App\Repositories\SettingsRepo;
 use App\Repositories\UserRepo;
+use App\Services\ConflictChecker;
+use App\Services\EventService;
+use App\Services\FinanceGuard;
 use App\Telegram\BotApi;
 use PDO;
 
@@ -83,5 +89,36 @@ final class Services
     public static function audit(): AuditRepo
     {
         return self::get('audit', static fn (): AuditRepo => new AuditRepo(self::pdo()));
+    }
+
+    public static function events(): EventRepo
+    {
+        return self::get('events', static fn (): EventRepo => new EventRepo(self::pdo()));
+    }
+
+    public static function payments(): PaymentRepo
+    {
+        return self::get('payments', static fn (): PaymentRepo => new PaymentRepo(self::pdo()));
+    }
+
+    public static function settings(): SettingsRepo
+    {
+        return self::get('settings', static fn (): SettingsRepo => new SettingsRepo(self::pdo()));
+    }
+
+    public static function eventService(): EventService
+    {
+        return self::get('eventService', static fn (): EventService => new EventService(
+            self::pdo(),
+            self::events(),
+            new ConflictChecker(self::events()),
+            self::audit(),
+        ));
+    }
+
+    /** Har chaqiruvda yangi: global moliya sozlamasi o'zgargan bo'lishi mumkin. */
+    public static function financeGuard(): FinanceGuard
+    {
+        return new FinanceGuard(self::settings()->financeVisibleToMembers());
     }
 }

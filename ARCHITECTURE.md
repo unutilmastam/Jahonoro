@@ -103,6 +103,7 @@ jahonoro/
 | `POST /events`, `PUT /events/{id}` | owner | yaratish/tahrir, `confirm_conflict` bilan |
 | `POST /events/{id}/cancel` · `/restore` · `/archive` | owner | holat |
 | `GET` · `POST /events/{id}/payments` | owner | avanslar |
+| `DELETE /events/{id}/payments/{payment_id}` | owner | xato kiritilgan avansni o'chirish |
 | `POST /events/{id}/remind-now` | owner | qo'lda eslatma |
 | `GET` · `PUT /settings` | owner | moliya ko'rinishi, eslatma soati |
 | `GET` · `POST` · `PUT /members` | owner | a'zolar, tasdiqlash |

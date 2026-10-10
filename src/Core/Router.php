@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 /**
- * Oddiy marshrutlagich. Namuna: /events/{id}. {id} faqat raqam.
+ * Oddiy marshrutlagich. Namuna: /events/{id}. {id}, {payment_id} — faqat musbat raqam.
  */
 final class Router
 {
@@ -27,11 +27,16 @@ final class Router
         $this->add('PUT', $pattern, $handler);
     }
 
+    public function delete(string $pattern, callable $handler): void
+    {
+        $this->add('DELETE', $pattern, $handler);
+    }
+
     public function add(string $method, string $pattern, callable $handler): void
     {
         $regex = preg_replace_callback(
             '/\{([a-z_]+)\}/',
-            static fn (array $m): string => '(?P<' . $m[1] . '>' . ($m[1] === 'id' ? '[1-9][0-9]{0,18}' : '[^/]+') . ')',
+            static fn (array $m): string => '(?P<' . $m[1] . '>' . (str_ends_with($m[1], 'id') ? '[1-9][0-9]{0,18}' : '[^/]+') . ')',
             str_replace('.', '\.', $pattern)
         );
         $this->routes[] = [
