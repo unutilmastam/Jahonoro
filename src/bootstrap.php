@@ -32,16 +32,25 @@ function config(string $key, mixed $default = null): mixed
 {
     static $values = null;
     if ($values === null) {
-        $file = APP_ROOT . '/config/config.php';
+        $file = config_file();
         $loaded = is_file($file) ? require $file : [];
         $values = is_array($loaded) ? $loaded : [];
     }
     return array_key_exists($key, $values) ? $values[$key] : $default;
 }
 
+/**
+ * Config fayl yo'li. Testlar JAHONORO_CONFIG muhit o'zgaruvchisi bilan boshqa faylni beradi.
+ */
+function config_file(): string
+{
+    $env = getenv('JAHONORO_CONFIG');
+    return is_string($env) && $env !== '' ? $env : APP_ROOT . '/config/config.php';
+}
+
 function config_loaded(): bool
 {
-    return is_file(APP_ROOT . '/config/config.php');
+    return is_file(config_file());
 }
 
 date_default_timezone_set((string) config('TIMEZONE', 'Asia/Tashkent'));

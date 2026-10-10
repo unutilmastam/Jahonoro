@@ -48,7 +48,7 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 
 - [x] 0 — Skelet va hosting sinovi — Core (Db, Router, Request, Response, Logger), `/api/ping`, .htaccess, logotipli index.html, 11 test; hostingda `db`/`telegram_api` tekshiruvi kutilmoqda
 - [x] 1 — Maʼlumotlar bazasi — 8 jadval, FK, CHECK, seed; MariaDB 10.11 da ikki marta import xatosiz
-- [ ] 2 — Autentifikatsiya va a'zolik
+- [x] 2 — Autentifikatsiya va aʼzolik — initData HMAC, Bearer sessiya (hash), getChatMember kesh 10 daq, pending oqimi, rate limit; 29 test
 - [ ] 3 — To'ylar va moliya API
 - [ ] 4 — Telegram xabarlari va eslatmalar
 - [ ] 5 — Frontend poydevori va dizayn tizimi
