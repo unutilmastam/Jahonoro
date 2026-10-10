@@ -53,12 +53,9 @@ final class SettingsController
         return Response::ok($this->present());
     }
 
-    /** Eslatma soati o'zgarsa kelgusi to'ylar eslatmalari qayta hisoblanadi (4-bosqich). */
+    /** Eslatma soati o'zgarsa kelgusi to'ylar eslatmalari qayta hisoblanadi. */
     private function resyncReminders(): void
     {
-        if (!method_exists(Services::class, 'reminders')) {
-            return;
-        }
         $scheduler = Services::reminders();
         foreach (Services::events()->upcomingActiveIds() as $id) {
             $scheduler->sync($id);

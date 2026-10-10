@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Auth\Access;
 use App\Core\Db;
 use App\Core\Logger;
 use App\Core\Request;
 use App\Core\Response;
+use App\Core\Services;
+use App\Telegram\TelegramException;
 
 /**
- * Tizim holati. 0-bosqichda faqat /ping — hosting sinovi uchun.
- * Javobda bot token yoki boshqa maxfiy ma'lumot hech qachon chiqmaydi.
+ * Tizim holati. Javobda bot token yoki boshqa maxfiy ma'lumot hech qachon chiqmaydi.
  */
 final class HealthController
 {
+    /**
+     * GET /ping — hosting sinovi (hamma uchun).
+     */
     public function ping(Request $request): Response
     {
         return Response::ok([
@@ -27,38 +32,52 @@ final class HealthController
     }
 
     /**
+     * GET /health — owner uchun to'liq holat.
+     */
+    public function health(Request $request): Response
+    {
+        Access::requireOwner($request);
+
+        $botUsername = null;
+        try {
+            $me = Services::bot()->getMe();
+            $botUsername = isset($me['username']) ? (string) $me['username'] : null;
+            $telegram = 'ok';
+        } catch (TelegramException $e) {
+            $telegram = 'fail';
+        }
+
+        $cron = Services::settings()->get('cron_last_run', '');
+        $cronAge = $cron !== '' && $cron !== null ? time() - (int) strtotime($cron) : null;
+
+        return Response::ok([
+            'php_version' => PHP_VERSION,
+            'db' => 'ok',
+            'telegram_api' => $telegram,
+            'bot_username' => $botUsername,
+            'group_configured' => (string) config('GROUP_CHAT_ID', '') !== '',
+            'mini_app_configured' => (string) config('MINI_APP_LINK', '') !== '',
+            'cron_last_run' => $cron !== '' ? $cron : null,
+            'cron_ok' => $cronAge !== null && $cronAge < 900,
+            'reminders' => Services::reminderRepo()->countsByStatus(),
+            'time' => date('c'),
+        ]);
+    }
+
+    /**
      * Bot API getMe: hosting api.telegram.org ga chiqa oladimi va token to'g'rimi.
      */
     private function telegramReachable(): bool
     {
-        $token = (string) config('BOT_TOKEN', '');
-        if ($token === '' || !function_exists('curl_init')) {
+        if ((string) config('BOT_TOKEN', '') === '') {
             return false;
         }
-
-        $ch = curl_init('https://api.telegram.org/bot' . $token . '/getMe');
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT => 10,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
-        ]);
-        $raw = curl_exec($ch);
-        $errno = curl_errno($ch);
-        $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        curl_close($ch);
-
-        if ($errno !== 0 || !is_string($raw)) {
-            // URL'da token bor — shuning uchun faqat xato raqami yoziladi
-            Logger::warning('telegram_getme_network', ['curl_errno' => $errno]);
+        try {
+            Services::bot()->getMe();
+            return true;
+        } catch (TelegramException $e) {
+            Logger::warning('telegram_getme_failed', ['code' => $e->errorCode]);
             return false;
         }
-        $data = json_decode($raw, true);
-        $ok = $status === 200 && is_array($data) && ($data['ok'] ?? false) === true;
-        if (!$ok) {
-            Logger::warning('telegram_getme_failed', ['http_status' => $status]);
-        }
-        return $ok;
     }
 }

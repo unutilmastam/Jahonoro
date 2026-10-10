@@ -10,11 +10,14 @@ use App\Auth\SessionService;
 use App\Repositories\AuditRepo;
 use App\Repositories\EventRepo;
 use App\Repositories\PaymentRepo;
+use App\Repositories\ReminderRepo;
 use App\Repositories\SettingsRepo;
 use App\Repositories\UserRepo;
 use App\Services\ConflictChecker;
 use App\Services\EventService;
 use App\Services\FinanceGuard;
+use App\Services\ReminderScheduler;
+use App\Telegram\MessageBuilder;
 use App\Telegram\BotApi;
 use PDO;
 
@@ -113,6 +116,7 @@ final class Services
             self::events(),
             new ConflictChecker(self::events()),
             self::audit(),
+            self::reminders(),
         ));
     }
 
@@ -120,5 +124,27 @@ final class Services
     public static function financeGuard(): FinanceGuard
     {
         return new FinanceGuard(self::settings()->financeVisibleToMembers());
+    }
+
+    public static function reminderRepo(): ReminderRepo
+    {
+        return self::get('reminderRepo', static fn (): ReminderRepo => new ReminderRepo(self::pdo()));
+    }
+
+    public static function messages(): MessageBuilder
+    {
+        return self::get('messages', static fn (): MessageBuilder => new MessageBuilder((string) config('MINI_APP_LINK', '')));
+    }
+
+    public static function reminders(): ReminderScheduler
+    {
+        return self::get('reminders', static fn (): ReminderScheduler => new ReminderScheduler(
+            self::reminderRepo(),
+            self::events(),
+            self::settings(),
+            self::bot(),
+            self::messages(),
+            (string) config('GROUP_CHAT_ID', '')
+        ));
     }
 }

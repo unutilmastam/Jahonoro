@@ -10,9 +10,11 @@ use App\Controllers\AuthController;
 use App\Controllers\CalendarController;
 use App\Controllers\DashboardController;
 use App\Controllers\EventController;
+use App\Controllers\GroupController;
 use App\Controllers\HealthController;
 use App\Controllers\MemberController;
 use App\Controllers\PaymentController;
+use App\Controllers\ReminderController;
 use App\Controllers\SettingsController;
 use App\Core\Router;
 
@@ -25,8 +27,11 @@ return static function (Router $r): void {
     $dashboard = new DashboardController();
     $settings = new SettingsController();
     $members = new MemberController();
+    $reminders = new ReminderController();
+    $group = new GroupController();
 
     $r->get('/ping', [$health, 'ping']);
+    $r->get('/health', [$health, 'health']);
 
     $r->post('/auth/telegram', [$auth, 'telegram']);
     $r->get('/me', [$auth, 'me']);
@@ -52,4 +57,8 @@ return static function (Router $r): void {
     $r->get('/members', [$members, 'index']);
     $r->post('/members', [$members, 'store']);
     $r->put('/members/{id}', [$members, 'update']);
+
+    $r->post('/events/{id}/remind-now', [$reminders, 'remindNow']);
+    $r->get('/reminders/status', [$reminders, 'status']);
+    $r->post('/group/publish-button', [$group, 'publishButton']);
 };

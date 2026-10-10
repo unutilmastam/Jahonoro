@@ -50,7 +50,7 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 - [x] 1 — Maʼlumotlar bazasi — 8 jadval, FK, CHECK, seed; MariaDB 10.11 da ikki marta import xatosiz
 - [x] 2 — Autentifikatsiya va aʼzolik — initData HMAC, Bearer sessiya (hash), getChatMember kesh 10 daq, pending oqimi, rate limit; 29 test
 - [x] 3 — Toʻylar va moliya API — CRUD, holatlar, mojaro 409, avanslar (+ DELETE), dashboard, kalendar, aʼzolar, sozlamalar; FinanceGuard sizish testlari; 52 test
-- [ ] 4 — Telegram xabarlari va eslatmalar
+- [x] 4 — Telegram xabarlari va eslatmalar — MessageBuilder (oq roʻyxat), ReminderScheduler (dedupe, claim, qayta urinish), cron, remind-now, publish-button, health; 70 test
 - [ ] 5 — Frontend poydevori va dizayn tizimi
 - [ ] 6 — A'zo sahifalari
 - [ ] 7 — Owner ekranlari
