@@ -80,6 +80,9 @@ function fresh_db(): FakeBotApi
     if (!db_available()) {
         throw new SkipTest('MySQL mavjud emas');
     }
+    if (!str_contains((string) config('DB_NAME'), 'test')) {
+        throw new RuntimeException('Xavfsizlik: testlar faqat nomida "test" bor bazada ishlaydi.');
+    }
     $pdo = \App\Core\Db::pdo();
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
     foreach ($pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN) as $table) {

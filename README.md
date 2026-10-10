@@ -14,21 +14,19 @@ PHP 8.2 (frameworksiz, Composer'siz) · MySQL/MariaDB (PDO) · vanilla JS ES mod
 
 ```
 public/        subdomen docroot (index.html, .htaccess, api/index.php, assets/)
-src/           PHP kod (bootstrap.php, Core/, Controllers/, ...)
+src/           PHP kod (bootstrap.php, routes.php, Core/, Auth/, Telegram/, Repositories/, Services/, Controllers/)
+cron/          reminders.php — eslatmalar ishchisi (cPanel cron)
+database/      migrations/*.sql — phpMyAdmin orqali import
 config/        config.example.php → serverda config.php (gitignore)
 storage/logs/  log fayllar
 tests/         PHP CLI testlar: php tests/run.php
 ```
 
-## Oʻrnatish (qisqa)
+## O‘rnatish
 
-To'liq ro'yxat — `ARCHITECTURE.md` 9-bo'lim.
+Qadam-baqadam: [`docs/DEPLOY.md`](docs/DEPLOY.md). Qo'lda sinov ro'yxati: [`docs/TESTING.md`](docs/TESTING.md).
 
-1. cPanel → Git Version Control → repo'ni `/home/USER/jahonoro` ga klonlash.
-2. Subdomen docroot'i → `jahonoro/public`, AutoSSL yoqish.
-3. MySQL baza va foydalanuvchi yaratish.
-4. File Manager: `config/config.example.php` → `config/config.php`, qiymatlarni to'ldirish, ruxsat `600`.
-5. Brauzerda `https://<subdomen>/api/ping` ochish.
+Qisqacha: cPanel Git Version Control → subdomen docroot `jahonoro/public` → MySQL + `database/migrations/*.sql` import → `config/config.php` → `/api/ping` → cron har 5 daqiqa → ilovada Sozlamalar → "Guruhga tugma yuborish".
 
 ## Hosting sinovi (0-bosqich)
 
@@ -49,3 +47,5 @@ Xato tafsilotlari `storage/logs/app-YYYY-MM-DD.log` da (token va parollarsiz).
 ```
 php tests/run.php
 ```
+
+MySQL kerak bo'lgan testlar `TEST_DB_HOST/NAME/USER/PASS` muhit o'zgaruvchilaridan foydalanadi (standart: `127.0.0.1`, `jahonoro_test`, `jt`/`jt`). Baza bo'lmasa ular "skip" bo'ladi. Testlar bazani har safar tozalaydi — hech qachon ishchi bazaga ulamang.
