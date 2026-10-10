@@ -16,7 +16,7 @@ Stek: PHP 8.2 + MySQL/MariaDB + vanilla JS (build bosqichisiz), cPanel shared ho
 | Eslatma takrori | `dedupe_key` = tur + tadbir + boshlanish vaqti. Vaqt o'zgarsa yangi eslatma, eskisi bekor |
 | MVP hajmi | To'ylar, kalendar, to'lovlar, eslatmalar, sozlamalar, a'zolar. Checklist, davomat, CSV — 2-versiya |
 | Deploy | GitHub (private) → cPanel Git Version Control → "Update from Remote" |
-| Xarita | Owner nuqtani ilova ichidagi xaritadan o'zi qo'yadi (Leaflet repoda + CARTO/OSM plitkalari). Ochish — Google Maps / Yandex. Nuqta yo'q bo'lsa nomi/manzili bilan qidiruv |
+| Xarita | Owner nuqtani ilova ichidagi xaritadan o'zi qo'yadi (Leaflet repoda + OpenStreetMap plitkalari). Ochish — Google Maps / Yandex. Nuqta yo'q bo'lsa nomi/manzili bilan qidiruv |
 | Joylar va vaqtlar | 2 joy: to'yxona va to'y egasining uyi. Vaqtlar: Manzilda bo'lish, Nahor, Abet, Kech; asosiy vaqt = eng birinchi tadbir |
 | Vaqt zonasi | Asia/Tashkent (yozgi vaqt yo'q) |
 

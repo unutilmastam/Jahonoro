@@ -1,4 +1,4 @@
-// Xarita: Leaflet (repoda, assets/vendor/leaflet) + CARTO Voyager plitkalari (OpenStreetMap ma'lumoti).
+// Xarita: Leaflet (repoda, assets/vendor/leaflet) + OpenStreetMap plitkalari (kalitsiz, bepul).
 // Nuqtani faqat owner o'zi qo'yadi — taxmin qilinmaydi.
 
 import { h, button, iconButton } from '../ui/components.js';
@@ -7,8 +7,8 @@ import { openSheet } from '../ui/sheet.js';
 import { toast } from '../ui/toast.js';
 import { parseCoordinates } from './maps.js';
 
-const TILE_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-const ATTRIBUTION = '© OpenStreetMap · © CARTO';
+const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ATTRIBUTION = '© OpenStreetMap';
 const DEFAULT_CENTER = [41.3, 64.6]; // O'zbekiston markazi
 const STORE_KEY = 'jahonoro.map.center';
 
@@ -36,7 +36,13 @@ function pinIcon(L) {
 }
 
 function baseLayer(L) {
-  return L.tileLayer(TILE_URL, { subdomains: 'abcd', maxZoom: 19, attribution: ATTRIBUTION, detectRetina: true });
+  // OSM qoidasi: so'rovda sayt manzili (Referer) bo'lishi shart — sahifa umumiy "no-referrer" bo'lsa ham
+  return L.tileLayer(TILE_URL, {
+    maxZoom: 19,
+    attribution: ATTRIBUTION,
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    crossOrigin: false,
+  });
 }
 
 function savedCenter() {

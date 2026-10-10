@@ -264,6 +264,6 @@ Markazda logotip belgisi, `JAHONORO` yozuvi va bitta qator matn.
 | 2026-10-10 | "Keyingi to'y" chiptasi o'rniga butunlay firuza karta | Yagona yorqin element yanada kuchli, perforatsiya va teshiklar ortiqcha bezak edi |
 | 2026-10-10 | Vaqtlar: Manzilda bo'lish · Nahor · Abet · Kech. Jo'nash, Soundcheck va "Boshlanish" olib tashlandi | Foydalanuvchi talabi. Asosiy vaqt (`start_time`) = nahor/abet/kechning eng birinchisi |
 | 2026-10-10 | Ikki joy: to'yxona va to'y egasining uyi, ikkalasi xaritadan belgilanadi | Nahor ko'pincha uyda, kech to'yxonada o'tadi |
-| 2026-10-10 | Xarita: Leaflet 1.9.4 (repoda) + CARTO Voyager plitkalari (OpenStreetMap) | Kutubxona o'zimizda; xarita rasmlari tabiatan tashqi, kalitsiz va bepul. CSP'da faqat `*.basemaps.cartocdn.com` ruxsat etilgan |
+| 2026-10-10 | Xarita: Leaflet 1.9.4 (repoda) + OpenStreetMap plitkalari (`tile.openstreetmap.org`, Referer bilan) | Kutubxona o'zimizda; plitkalar kalitsiz va bepul. CARTO kalit talab qila boshladi ("API KEY REQUIRED"), shuning uchun OSM'ga o'tildi |
 | 2026-10-10 | Yangi logotip: peshtoq ichida nota | Oddiy, kichik o'lchamda ham o'qiladi, milliy va musiqiy ma'no |
 

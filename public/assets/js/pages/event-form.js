@@ -23,7 +23,7 @@ function section(title, ...children) {
  * Joy maydoni: nom/manzil + xaritadagi nuqta (owner o'zi qo'yadi).
  * @returns {{el: HTMLElement, input: HTMLInputElement, point: () => ({lat: string, lng: string}|null)}}
  */
-function placeField({ label, name, value, placeholder, maxlength, lat, lng, pointField, mapTitle }) {
+function placeField({ label, name, value, placeholder, maxlength, lat, lng, pointField, mapTitle, onPickStart, onPickEnd }) {
   let point = lat !== null && lat !== undefined && lng !== null && lng !== undefined
     ? { lat: String(lat), lng: String(lng) }
     : null;
@@ -57,7 +57,9 @@ function placeField({ label, name, value, placeholder, maxlength, lat, lng, poin
   };
 
   async function pick() {
+    onPickStart?.();
     const chosen = await pickLocation({ title: mapTitle, lat: point?.lat ?? null, lng: point?.lng ?? null });
+    onPickEnd?.();
     if (chosen) {
       point = chosen;
       tg.haptic.notify('success');
@@ -136,6 +138,14 @@ export async function render(ctx) {
     timesError.textContent = message || '';
   };
 
+  // Xarita oynasi ochiq paytda Telegram "Saqlash" tugmasi xalaqit bermasin
+  let saveHandler = () => {};
+  const mainButton = (visible) => {
+    if (!tg.hasMainButton()) return;
+    if (visible) tg.showMainButton('Saqlash', () => saveHandler());
+    else tg.hideMainButton();
+  };
+
   // --- Joylar
   const venue = placeField({
     label: 'To‘yxona nomi',
@@ -147,6 +157,8 @@ export async function render(ctx) {
     lng: ev?.longitude ?? null,
     pointField: 'latitude',
     mapTitle: 'To‘yxona joylashuvi',
+    onPickStart: () => mainButton(false),
+    onPickEnd: () => mainButton(true),
   });
   const home = placeField({
     label: 'To‘y egasining manzili',
@@ -158,6 +170,8 @@ export async function render(ctx) {
     lng: ev?.home_longitude ?? null,
     pointField: 'home_latitude',
     mapTitle: 'To‘y egasining uyi',
+    onPickStart: () => mainButton(false),
+    onPickEnd: () => mainButton(true),
   });
 
   // --- Moliya
@@ -315,7 +329,8 @@ export async function render(ctx) {
   if (fallbackBtn) {
     form.appendChild(h('div', { class: 'sticky-action' }, fallbackBtn));
   } else {
-    tg.showMainButton('Saqlash', () => save());
+    saveHandler = () => save();
+    tg.showMainButton('Saqlash', saveHandler);
   }
   if (!editId) setTimeout(() => title.focus({ preventScroll: true }), 200);
 

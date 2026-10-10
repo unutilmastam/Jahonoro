@@ -26,7 +26,7 @@ Bu repo: JAHONORO musiqa guruhi (1 rahbar + 8 a'zo) uchun to'ylar jadvali Telegr
 - MySQL/MariaDB, faqat PDO prepared, `ERRMODE_EXCEPTION`, `EMULATE_PREPARES=false`.
 - Frontend: vanilla JS ES modules, build bosqichi yo'q, npm paket yo'q. Tashqi CDN yo'q — shriftlar va ikonkalar repoda.
 - Shriftlar (Unbounded, Manrope) — woff2, `public/assets/fonts/` da (OFL litsenziyasi bilan).
-- Xarita: Leaflet repoda (`assets/vendor/leaflet`), plitkalar CARTO'dan (CSP'da faqat `*.basemaps.cartocdn.com`). Boshqa tashqi kutubxona yo'q.
+- Xarita: Leaflet repoda (`assets/vendor/leaflet`), plitkalar OpenStreetMap'dan (CSP'da faqat `tile.openstreetmap.org`). Boshqa tashqi kutubxona yo'q.
 - UI matni faqat o'zbek lotin, `DESIGN.md` 10-bo'lim lug'ati bo'yicha. Kod identifikatorlari inglizcha.
 - Ranglar, o'lchamlar faqat `tokens.css` o'zgaruvchilari orqali.
 - Hosting: cPanel shared (hostmaster.uz). Doimiy jarayon, Docker, Node server yo'q. Fon ishlari faqat cron orqali.
