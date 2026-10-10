@@ -46,7 +46,7 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 
 ## Holat
 
-- [ ] 0 — Skelet va hosting sinovi
+- [x] 0 — Skelet va hosting sinovi — Core (Db, Router, Request, Response, Logger), `/api/ping`, .htaccess, logotipli index.html, 11 test; hostingda `db`/`telegram_api` tekshiruvi kutilmoqda
 - [ ] 1 — Ma'lumotlar bazasi
 - [ ] 2 — Autentifikatsiya va a'zolik
 - [ ] 3 — To'ylar va moliya API
