@@ -2,7 +2,7 @@
 
 import * as api from '../api.js';
 import * as tg from '../tg.js';
-import { h, clear, listBlock, row, switchControl, button, errorState, setLoading, avatar } from '../ui/components.js';
+import { h, clear, listBlock, row, switchControl, button, errorState, setLoading, avatar, plainName } from '../ui/components.js';
 import { icon } from '../ui/icons.js';
 import { openSheet, confirmSheet } from '../ui/sheet.js';
 import { toast } from '../ui/toast.js';
@@ -116,7 +116,7 @@ export async function render(ctx) {
       const r = h('button', { type: 'button', class: `row row--action member-row${m.status === 'disabled' ? ' is-muted' : ''}`, onClick: () => openMember(m) },
         avatar(m.name),
         h('span', { class: 'row__main' },
-          h('span', { class: 'row__label' }, m.name),
+          h('span', { class: 'row__label' }, plainName(m.name)),
           h('span', { class: 'row__sub' }, m.role === 'owner'
             ? 'Rahbar'
             : [MEMBER_STATUS[m.status], m.username ? `@${m.username}` : null, !m.in_group && m.status !== 'pending' ? 'guruhda emas' : null].filter(Boolean).join(' · '))),
@@ -295,7 +295,7 @@ export async function render(ctx) {
     }
     actions.push(button('Yopish', { variant: 'ghost', block: true, onClick: () => sheet.close() }));
     const sheet = openSheet({
-      title: m.name,
+      title: plainName(m.name),
       content: h('div', { class: 'block block--inset' },
         row('Holat', MEMBER_STATUS[m.status]),
         m.username ? row('Telegram', `@${m.username}`) : null,

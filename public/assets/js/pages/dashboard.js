@@ -2,7 +2,7 @@
 
 import * as api from '../api.js';
 import { session } from '../store.js';
-import { h, clear, append, eventRow, dayHeader, listBlock, row, avatar, errorState } from '../ui/components.js';
+import { h, clear, append, eventRow, dayHeader, listBlock, row, avatar, errorState, plainName } from '../ui/components.js';
 import { ticket, ticketEmpty } from '../ui/ticket.js';
 import { ticketSkeleton, rowsSkeleton, delayedSkeleton } from '../ui/skeleton.js';
 import { greeting, todayISO, dayLabel, timeAgo, formatDayMonth } from '../lib/date-uz.js';
@@ -16,7 +16,7 @@ const ACTION_LABELS = {
 };
 
 function firstName(name) {
-  return String(name || '').trim().split(/\s+/)[0] || '';
+  return plainName(name).split(/\s+/)[0] || '';
 }
 
 function header(user) {
@@ -59,11 +59,13 @@ function weekList(items, today, nextId) {
 
 function debtBlock(debt, navigate) {
   if (!debt) return null;
-  const value = Number.parseFloat(debt.balance) > 0 ? formatMoney(debt.balance) : 'Qarz yo‘q';
+  const hasDebt = Number.parseFloat(debt.balance) > 0;
   return listBlock('Qarzdorlik',
     row('Jami qoldiq', null, {
       sub: debt.events > 0 ? `${debt.events} ta to‘y bo‘yicha` : null,
-      trailing: h('span', { class: 'debt-value num' }, value),
+      trailing: hasDebt
+        ? h('span', { class: 'debt-value num' }, formatMoney(debt.balance))
+        : h('span', { class: 'row__value' }, 'Qarz yo‘q'),
       onClick: () => navigate('/events'),
     }));
 }

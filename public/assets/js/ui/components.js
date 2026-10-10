@@ -210,8 +210,16 @@ export function row(label, value, { href, onClick, iconName, sub, trailing } = {
   return el;
 }
 
+/**
+ * Telegram ismlaridagi bezakli harflarni (𝐁𝐚𝐤𝐡, 𝓐𝓑) oddiy harfga aylantiradi.
+ * Ism o'zi o'zgarmaydi — faqat ko'rsatishda shrift bilan mos kelsin.
+ */
+export function plainName(name) {
+  return String(name ?? '').normalize('NFKC').trim();
+}
+
 /** Avatar: ismning bosh harfi. */
 export function avatar(name) {
-  const letter = String(name || '?').trim().charAt(0).toUpperCase() || '?';
+  const letter = Array.from(plainName(name))[0]?.toUpperCase() || '?';
   return h('span', { class: 'avatar', 'aria-hidden': 'true' }, letter);
 }
