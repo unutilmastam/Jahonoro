@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#D8B36A" stroke-width="1">
+  <!-- O'zbek girih naqshi: sakkiz qirrali yulduz va bog'lovchi chiziqlar (chipta stub foni uchun) -->
+  <path d="M24 6l5.3 12.7L42 24l-12.7 5.3L24 42l-5.3-12.7L6 24l12.7-5.3z"/>
+  <path d="M11.3 11.3L24 16.6l12.7-5.3-5.3 12.7 5.3 12.7L24 31.4l-12.7 5.3 5.3-12.7z"/>
+  <path d="M0 0l11.3 11.3M48 0L36.7 11.3M0 48l11.3-11.3M48 48L36.7 36.7"/>
+  <circle cx="24" cy="24" r="3.5"/>
+</svg>

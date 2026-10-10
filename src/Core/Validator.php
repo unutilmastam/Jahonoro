@@ -65,7 +65,7 @@ final class Validator
             return null;
         }
         if (!is_string($value) && !is_int($value)) {
-            $this->fail($field, $label . ' notoʻgʻri.');
+            $this->fail($field, $label . ' noto‘g‘ri.');
             return null;
         }
         $value = self::cleanText((string) $value);
@@ -84,7 +84,7 @@ final class Validator
             return $default;
         }
         if (!is_string($value) || !in_array($value, $allowed, true)) {
-            $this->fail($field, $label . ' notoʻgʻri tanlangan.');
+            $this->fail($field, $label . ' noto‘g‘ri tanlangan.');
             return $default;
         }
         return $value;
@@ -100,7 +100,7 @@ final class Validator
             return null;
         }
         if (!is_string($value) || !self::isDate($value)) {
-            $this->fail($field, $label . ' notoʻgʻri. Masalan: 2026-10-18.');
+            $this->fail($field, $label . ' noto‘g‘ri. Masalan: 2026-10-18.');
             return null;
         }
         return $value;
@@ -116,7 +116,7 @@ final class Validator
             return null;
         }
         if (!is_string($value) || !preg_match('/^([01]\d|2[0-3]):([0-5]\d)(:00)?$/', $value)) {
-            $this->fail($field, $label . ' notoʻgʻri. Masalan: 18:00.');
+            $this->fail($field, $label . ' noto‘g‘ri. Masalan: 18:00.');
             return null;
         }
         return substr($value, 0, 5);
@@ -135,7 +135,7 @@ final class Validator
             $value = (int) $value;
         }
         if (!is_int($value) || $value < $min || $value > $max) {
-            $this->fail($field, $label . ' ' . $min . ' dan ' . $max . ' gacha boʻlsin.');
+            $this->fail($field, $label . ' ' . $min . ' dan ' . $max . ' gacha bo‘lsin.');
             return null;
         }
         return $value;
@@ -156,14 +156,14 @@ final class Validator
         $normalized = self::normalizeMoney($value);
         if ($normalized === null) {
             if (is_numeric($value) && (float) $value < 0) {
-                $this->fail($field, $label . ' manfiy boʻlishi mumkin emas.');
+                $this->fail($field, $label . ' manfiy bo‘lishi mumkin emas.');
             } else {
-                $this->fail($field, $label . ' notoʻgʻri. Masalan: 12 500 000.');
+                $this->fail($field, $label . ' noto‘g‘ri. Masalan: 12 500 000.');
             }
             return null;
         }
         if ($positive && Money::toCents($normalized) <= 0) {
-            $this->fail($field, $label . ' 0 dan katta boʻlsin.');
+            $this->fail($field, $label . ' 0 dan katta bo‘lsin.');
             return null;
         }
         return $normalized;
@@ -179,7 +179,7 @@ final class Validator
             $value = str_replace(',', '.', $value);
         }
         if (!is_numeric($value) || abs((float) $value) > $limit) {
-            $this->fail($field, $label . ' notoʻgʻri.');
+            $this->fail($field, $label . ' noto‘g‘ri.');
             return null;
         }
         return number_format((float) $value, 6, '.', '');
@@ -200,7 +200,7 @@ final class Validator
         if ($value === 0 || $value === '0' || $value === 'false') {
             return false;
         }
-        $this->fail($field, 'Qiymat notoʻgʻri.');
+        $this->fail($field, 'Qiymat noto‘g‘ri.');
         return $default;
     }
 

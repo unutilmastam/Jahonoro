@@ -50,16 +50,16 @@ class BotApi
         if ($errno !== 0 || !is_string($raw)) {
             // curl_error matnida URL (token) bo'lishi mumkin — faqat raqam
             Logger::warning('telegram_network_error', ['method' => $method, 'curl_errno' => $errno]);
-            throw new TelegramException(0, 'Telegram bilan aloqa yoʻq (cURL ' . $errno . ')');
+            throw new TelegramException(0, 'Telegram bilan aloqa yo‘q (cURL ' . $errno . ')');
         }
 
         $data = json_decode($raw, true);
         if (!is_array($data)) {
-            throw new TelegramException($status >= 500 ? $status : 502, 'Telegram javobi notoʻgʻri');
+            throw new TelegramException($status >= 500 ? $status : 502, 'Telegram javobi noto‘g‘ri');
         }
         if (($data['ok'] ?? false) !== true) {
             $code = (int) ($data['error_code'] ?? $status);
-            $description = substr((string) ($data['description'] ?? 'Nomaʼlum xato'), 0, 200);
+            $description = substr((string) ($data['description'] ?? 'Noma’lum xato'), 0, 200);
             $retryAfter = isset($data['parameters']['retry_after']) ? (int) $data['parameters']['retry_after'] : null;
             Logger::warning('telegram_api_error', ['method' => $method, 'code' => $code, 'description' => $description]);
             throw new TelegramException($code, $description, $retryAfter);

@@ -8,7 +8,7 @@ use App\Services\FinanceGuard;
 function sample_event(array $over = []): array
 {
     return $over + [
-        'id' => '5', 'title' => 'Kelin toʻyi — Aziz va Madina', 'event_type' => 'kelin',
+        'id' => '5', 'title' => 'Kelin to‘yi — Aziz va Madina', 'event_type' => 'kelin',
         'event_date' => '2026-10-18', 'start_time' => '18:00:00', 'starts_at' => '2026-10-18 18:00:00',
         'nahor_time' => null, 'abet_time' => '13:00:00', 'assembly_time' => '16:30:00', 'departure_time' => null,
         'soundcheck_time' => null, 'duration_min' => null, 'venue_name' => 'Sohil', 'venue_address' => 'Denov',
@@ -84,7 +84,7 @@ test('FinanceGuard API: a\'zo tokeni bilan JSON\'da narx yo\'q, owner ko\'radi',
     $owner = login_owner();
     $member = login_member($bot);
     $res = api('POST', '/events', [
-        'title' => 'Kelin toʻyi', 'event_type' => 'kelin', 'event_date' => '2030-05-10', 'start_time' => '18:00',
+        'title' => 'Kelin to‘yi', 'event_type' => 'kelin', 'event_date' => '2030-05-10', 'start_time' => '18:00',
         'total_price' => '12 500 000', 'client_name' => 'Karim aka', 'client_phone' => '+998 90 123 45 67',
         'internal_notes' => 'maxfiy',
     ], $owner);

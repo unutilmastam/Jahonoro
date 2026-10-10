@@ -11,10 +11,10 @@ namespace App\Telegram;
 final class MessageBuilder
 {
     public const TYPE_LABELS = [
-        'kelin' => 'Kelin toʻyi',
-        'nikoh' => 'Nikoh toʻyi',
-        'sunnat' => 'Sunnat toʻyi',
-        'beshik' => 'Beshik toʻyi',
+        'kelin' => 'Kelin to‘yi',
+        'nikoh' => 'Nikoh to‘yi',
+        'sunnat' => 'Sunnat to‘yi',
+        'beshik' => 'Beshik to‘yi',
         'fotiha' => 'Fotiha marosimi',
         'korporativ' => 'Korporativ tadbir',
         'boshqa' => 'Boshqa tadbir',
@@ -39,9 +39,9 @@ final class MessageBuilder
         $date = (string) $event['event_date'];
         $days = (int) round((strtotime($date) - strtotime($today)) / 86400);
         $header = match ($days) {
-            0 => '🎵 TOʻY BUGUN!',
-            1 => '🎵 TOʻY ERTAGA!',
-            default => '🎵 TOʻY ESLATMASI',
+            0 => '🎵 TO‘Y BUGUN!',
+            1 => '🎵 TO‘Y ERTAGA!',
+            default => '🎵 TO‘Y ESLATMASI',
         };
 
         $place = implode(', ', array_filter([
@@ -55,8 +55,8 @@ final class MessageBuilder
             ['⏰', 'Boshlanish', self::time($event['start_time'] ?? null)],
             ['🍽', 'Nahor', self::time($event['nahor_time'] ?? null)],
             ['🍽', 'Abet', self::time($event['abet_time'] ?? null)],
-            ['👥', 'Yigʻilish', self::time($event['assembly_time'] ?? null)],
-            ['🚐', 'Joʻnash', self::time($event['departure_time'] ?? null)],
+            ['👥', 'Yig‘ilish', self::time($event['assembly_time'] ?? null)],
+            ['🚐', 'Jo‘nash', self::time($event['departure_time'] ?? null)],
             ['🎚', 'Soundcheck', self::time($event['soundcheck_time'] ?? null)],
             ['💍', 'Turi', self::TYPE_LABELS[(string) ($event['event_type'] ?? '')] ?? ''],
             ['📍', 'Manzil', $place],
@@ -70,7 +70,7 @@ final class MessageBuilder
             }
             $text .= "\n" . $emoji . ' ' . $label . ': ' . self::e($value);
         }
-        $text .= "\n\nIltimos, belgilangan vaqtda tayyor boʻling!";
+        $text .= "\n\nIltimos, belgilangan vaqtda tayyor bo‘ling!";
 
         $buttons = [];
         $mapUrl = self::mapUrl($event);
@@ -79,7 +79,7 @@ final class MessageBuilder
         }
         $appUrl = $this->appUrl('e' . (int) $event['id']);
         if ($appUrl !== null) {
-            $buttons[] = [['text' => '📅 TOʻYLAR JADVALI', 'url' => $appUrl]];
+            $buttons[] = [['text' => '📅 TO‘YLAR JADVALI', 'url' => $appUrl]];
         }
 
         return ['text' => $text, 'reply_markup' => $buttons !== [] ? ['inline_keyboard' => $buttons] : null];
@@ -97,8 +97,8 @@ final class MessageBuilder
             throw new \InvalidArgumentException('MINI_APP_LINK sozlanmagan');
         }
         return [
-            'text' => "📅 <b>JAHONORO</b> — toʻylar jadvali\n\nJadvalni ochish uchun pastdagi tugmani bosing.",
-            'reply_markup' => ['inline_keyboard' => [[['text' => '📅 TOʻYLAR JADVALI', 'url' => $url]]]],
+            'text' => "📅 <b>JAHONORO</b> — to‘ylar jadvali\n\nJadvalni ochish uchun pastdagi tugmani bosing.",
+            'reply_markup' => ['inline_keyboard' => [[['text' => '📅 TO‘YLAR JADVALI', 'url' => $url]]]],
         ];
     }
 

@@ -7,9 +7,9 @@ use App\Core\Services;
 function event_payload(array $over = []): array
 {
     return $over + [
-        'title' => 'Kelin toʻyi — Aziz va Madina', 'event_type' => 'kelin', 'event_date' => '2030-05-10',
-        'start_time' => '18:00', 'assembly_time' => '16:30', 'venue_name' => 'Sohil toʻyxonasi',
-        'venue_address' => 'Mustaqillik koʻchasi 12', 'district' => 'Denov',
+        'title' => 'Kelin to‘yi — Aziz va Madina', 'event_type' => 'kelin', 'event_date' => '2030-05-10',
+        'start_time' => '18:00', 'assembly_time' => '16:30', 'venue_name' => 'Sohil to‘yxonasi',
+        'venue_address' => 'Mustaqillik ko‘chasi 12', 'district' => 'Denov',
     ];
 }
 
@@ -39,7 +39,7 @@ test('Events: validatsiya xatolari o\'zbekcha, 422', function (): void {
     assert_same(422, $res->status);
     $d = $res->payload['error']['details'];
     assert_true(isset($d['title'], $d['event_date'], $d['start_time'], $d['total_price']), json_encode($d));
-    assert_same('Kelishilgan narx manfiy boʻlishi mumkin emas.', $d['total_price']);
+    assert_same('Kelishilgan narx manfiy bo‘lishi mumkin emas.', $d['total_price']);
 });
 
 test('Events: koordinatalar faqat juft, tasdiq koordinatasiz bo\'lmaydi', function (): void {
@@ -104,7 +104,7 @@ test('Events: ro\'yxat filtr, qidiruv, sahifalash (20)', function (): void {
     $owner = login_owner();
     for ($i = 1; $i <= 23; $i++) {
         $date = date('Y-m-d', strtotime("2030-01-01 +{$i} days"));
-        api('POST', '/events', event_payload(['event_date' => $date, 'title' => "Toʻy {$i}", 'event_type' => $i % 2 ? 'kelin' : 'sunnat', 'client_name' => "Mijoz{$i}"]), $owner);
+        api('POST', '/events', event_payload(['event_date' => $date, 'title' => "To‘y {$i}", 'event_type' => $i % 2 ? 'kelin' : 'sunnat', 'client_name' => "Mijoz{$i}"]), $owner);
     }
     $p1 = api('GET', '/events', null, $owner, ['scope' => 'upcoming'])->payload['data'];
     assert_same(20, count($p1['items']));
@@ -114,7 +114,7 @@ test('Events: ro\'yxat filtr, qidiruv, sahifalash (20)', function (): void {
     assert_true(!$p2['has_more']);
 
     assert_same(11, count(api('GET', '/events', null, $owner, ['type' => 'sunnat'])->payload['data']['items']));
-    assert_same(1, count(api('GET', '/events', null, $owner, ['q' => 'Toʻy 17'])->payload['data']['items']));
+    assert_same(1, count(api('GET', '/events', null, $owner, ['q' => 'To‘y 17'])->payload['data']['items']));
     assert_same(0, count(api('GET', '/events', null, $owner, ['scope' => 'past'])->payload['data']['items']));
     assert_same(422, api('GET', '/events', null, $owner, ['from' => 'kecha'])->status);
 });

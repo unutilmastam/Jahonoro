@@ -14,11 +14,11 @@ test('MessageBuilder: xabarda moliya va mijoz yo\'q, bo\'sh qatorlar tushadi', f
     $event = sample_event(['event_date' => '2026-10-18', 'nahor_time' => null, 'dress_code' => '']);
     $msg = $b->reminder($event, '2026-10-17');
     $t = $msg['text'];
-    assert_true(str_starts_with($t, '🎵 TOʻY ERTAGA!'), $t);
+    assert_true(str_starts_with($t, '🎵 TO‘Y ERTAGA!'), $t);
     assert_true(str_contains($t, '📅 Sana: 18-oktabr, yakshanba'));
     assert_true(str_contains($t, '⏰ Boshlanish: 18:00'));
-    assert_true(str_contains($t, '👥 Yigʻilish: 16:30'));
-    assert_true(str_contains($t, '💍 Turi: Kelin toʻyi'));
+    assert_true(str_contains($t, '👥 Yig‘ilish: 16:30'));
+    assert_true(str_contains($t, '💍 Turi: Kelin to‘yi'));
     assert_true(!str_contains($t, 'Nahor'), 'Bo\'sh Nahor qatori tushishi kerak');
     foreach (['12500000', '12 500 000', 'Karim', '123 45 67', 'maxfiy', 'Avans', 'Narx'] as $bad) {
         assert_true(!str_contains($t, $bad), "Xabarda '{$bad}' bor");
@@ -31,7 +31,7 @@ test('MessageBuilder: HTML escape', function (): void {
     $b = new MessageBuilder('https://t.me/JahonoroBot/jadval');
     $msg = $b->reminder(sample_event(['venue_name' => '<b>Sohil</b> & Co']), '2026-10-18');
     assert_true(str_contains($msg['text'], '&lt;b&gt;Sohil&lt;/b&gt; &amp; Co'));
-    assert_true(str_starts_with($msg['text'], '🎵 TOʻY BUGUN!'));
+    assert_true(str_starts_with($msg['text'], '🎵 TO‘Y BUGUN!'));
 });
 
 test('MessageBuilder: xarita — tasdiqlangan nuqta yoki manzil matni', function (): void {

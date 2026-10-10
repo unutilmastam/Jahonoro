@@ -37,7 +37,7 @@ final class PaymentController
 
         $v = new Validator($request->json());
         $amount = $v->money('amount', true, true, 'Summa');
-        $paidOn = $v->date('paid_on', false, 'Toʻlov sanasi') ?? date('Y-m-d');
+        $paidOn = $v->date('paid_on', false, 'To‘lov sanasi') ?? date('Y-m-d');
         $note = $v->string('note', 255, false, 'Izoh') ?? '';
         $v->throwIfErrors();
 

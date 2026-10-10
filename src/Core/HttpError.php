@@ -27,7 +27,7 @@ final class HttpError extends RuntimeException
 
     public static function forbidden(): self
     {
-        return new self(403, 'no_access', 'Sizda bu ilovaga kirish huquqi yoʻq. Guruh rahbariga murojaat qiling.');
+        return new self(403, 'no_access', 'Sizda bu ilovaga kirish huquqi yo‘q. Guruh rahbariga murojaat qiling.');
     }
 
     public static function ownerOnly(): self
@@ -37,17 +37,17 @@ final class HttpError extends RuntimeException
 
     public static function pending(): self
     {
-        return new self(403, 'pending', 'Soʻrovingiz yuborildi. Guruh rahbari tasdiqlagach ilova ochiladi.');
+        return new self(403, 'pending', 'So‘rovingiz yuborildi. Guruh rahbari tasdiqlagach ilova ochiladi.');
     }
 
-    public static function notFound(string $message = 'Toʻy topilmadi.'): self
+    public static function notFound(string $message = 'To‘y topilmadi.'): self
     {
         return new self(404, 'not_found', $message);
     }
 
     public static function tooMany(): self
     {
-        return new self(429, 'rate_limited', 'Juda koʻp soʻrov. Bir daqiqadan keyin qayta urinib koʻring.');
+        return new self(429, 'rate_limited', 'Juda ko‘p so‘rov. Bir daqiqadan keyin qayta urinib ko‘ring.');
     }
 
     public function toResponse(): Response

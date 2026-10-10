@@ -65,10 +65,10 @@ final class Router
         if ($allowed !== []) {
             return new Response(
                 405,
-                ['ok' => false, 'error' => ['code' => 'method_not_allowed', 'message' => 'Bu amal qoʻllab-quvvatlanmaydi.']],
+                ['ok' => false, 'error' => ['code' => 'method_not_allowed', 'message' => 'Bu amal qo‘llab-quvvatlanmaydi.']],
                 ['Allow' => implode(', ', array_unique($allowed))]
             );
         }
-        return Response::error('not_found', 'Soʻralgan manzil topilmadi.', 404);
+        return Response::error('not_found', 'So‘ralgan manzil topilmadi.', 404);
     }
 }

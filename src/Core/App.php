@@ -37,7 +37,7 @@ final class App
                 'file' => basename($e->getFile()) . ':' . $e->getLine(),
                 'path' => $request->path,
             ]);
-            return Response::error('server_error', 'Serverda xatolik. Birozdan keyin qayta urinib koʻring.', 500);
+            return Response::error('server_error', 'Serverda xatolik. Birozdan keyin qayta urinib ko‘ring.', 500);
         }
     }
 }

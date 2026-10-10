@@ -40,23 +40,23 @@ final class EventService
 
         $data = [
             'title' => $v->string('title', 160, true, 'Sarlavha'),
-            'event_type' => $v->enum('event_type', EventRepo::TYPES, 'kelin', 'Toʻy turi'),
+            'event_type' => $v->enum('event_type', EventRepo::TYPES, 'kelin', 'To‘y turi'),
             'event_date' => $v->date('event_date', true, 'Sana'),
             'start_time' => $v->time('start_time', true, 'Boshlanish vaqti'),
             'nahor_time' => $v->time('nahor_time', false, 'Nahor vaqti'),
             'abet_time' => $v->time('abet_time', false, 'Abet vaqti'),
-            'assembly_time' => $v->time('assembly_time', false, 'Yigʻilish vaqti'),
-            'departure_time' => $v->time('departure_time', false, 'Joʻnash vaqti'),
+            'assembly_time' => $v->time('assembly_time', false, 'Yig‘ilish vaqti'),
+            'departure_time' => $v->time('departure_time', false, 'Jo‘nash vaqti'),
             'soundcheck_time' => $v->time('soundcheck_time', false, 'Soundcheck vaqti'),
             'duration_min' => $v->int('duration_min', 0, 1440, false, 'Davomiylik (daqiqa)'),
-            'venue_name' => $v->string('venue_name', 160, false, 'Toʻyxona nomi') ?? '',
+            'venue_name' => $v->string('venue_name', 160, false, 'To‘yxona nomi') ?? '',
             'venue_address' => $v->string('venue_address', 255, false, 'Manzil') ?? '',
             'district' => $v->string('district', 100, false, 'Tuman') ?? '',
             'latitude' => $v->coordinate('latitude', 90, 'Kenglik'),
             'longitude' => $v->coordinate('longitude', 180, 'Uzunlik'),
             'location_verified' => $v->bool('location_verified') ? 1 : 0,
             'total_price' => $v->money('total_price', false, false, 'Kelishilgan narx'),
-            'financial_visibility' => $v->enum('financial_visibility', ['inherit', 'private', 'members'], 'inherit', 'Moliya koʻrinishi'),
+            'financial_visibility' => $v->enum('financial_visibility', ['inherit', 'private', 'members'], 'inherit', 'Moliya ko‘rinishi'),
             'client_name' => $v->string('client_name', 128, false, 'Mijoz ismi') ?? '',
             'client_phone' => $v->string('client_phone', 32, false, 'Telefon') ?? '',
             'performance_notes' => $v->string('performance_notes', self::TEXT_LIMIT, false, 'Ijro izohi'),
@@ -68,7 +68,7 @@ final class EventService
         ];
 
         if ($data['client_phone'] !== '' && !preg_match('/^[0-9+()\-\s]{5,32}$/', $data['client_phone'])) {
-            $v->fail('client_phone', 'Telefon raqami notoʻgʻri. Masalan: +998 90 123 45 67.');
+            $v->fail('client_phone', 'Telefon raqami noto‘g‘ri. Masalan: +998 90 123 45 67.');
         }
         if (($data['latitude'] === null) !== ($data['longitude'] === null)) {
             $v->fail('latitude', 'Kenglik va uzunlik birga kiritilsin.');
@@ -152,7 +152,7 @@ final class EventService
         $this->transaction(function () use ($id, $actorId, $to, $allowedFrom, $action): void {
             $event = $this->events->find($id, true) ?? throw HttpError::notFound();
             if (!in_array($event['status'], $allowedFrom, true)) {
-                throw new HttpError(409, 'invalid_status', 'Bu toʻy holatida bu amalni bajarib boʻlmaydi.');
+                throw new HttpError(409, 'invalid_status', 'Bu to‘y holatida bu amalni bajarib bo‘lmaydi.');
             }
             $this->events->setStatus($id, $to);
             if ($to === 'planned') {
@@ -178,7 +178,7 @@ final class EventService
         $found = $this->conflicts->find($data['event_date'], $data['starts_at'], $data['duration_min'], $excludeId);
         if ($found !== []) {
             $guard = new FinanceGuard(false);
-            throw new HttpError(409, 'conflict', 'Bu kunda yana ' . count($found) . ' ta toʻy bor.', [
+            throw new HttpError(409, 'conflict', 'Bu kunda yana ' . count($found) . ' ta to‘y bor.', [
                 'conflicts' => $guard->presentRows($found),
             ]);
         }

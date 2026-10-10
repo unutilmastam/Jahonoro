@@ -37,7 +37,7 @@ final class MemberController
         $v->throwIfErrors();
 
         if (Access::isOwnerTelegramId((int) $telegramId)) {
-            throw new HttpError(422, 'validation', 'Bu rahbarning oʻz ID raqami.', ['telegram_user_id' => 'Bu rahbarning oʻz ID raqami.']);
+            throw new HttpError(422, 'validation', 'Bu rahbarning o‘z ID raqami.', ['telegram_user_id' => 'Bu rahbarning o‘z ID raqami.']);
         }
 
         $users = Services::users();
@@ -60,9 +60,9 @@ final class MemberController
     {
         $owner = Access::requireOwner($request);
         $users = Services::users();
-        $user = $users->findById((int) $request->param('id')) ?? throw HttpError::notFound('Aʼzo topilmadi.');
+        $user = $users->findById((int) $request->param('id')) ?? throw HttpError::notFound('A’zo topilmadi.');
         if (Access::isOwnerTelegramId((int) $user['telegram_user_id'])) {
-            throw new HttpError(409, 'owner_locked', 'Rahbar hisobini oʻzgartirib boʻlmaydi.');
+            throw new HttpError(409, 'owner_locked', 'Rahbar hisobini o‘zgartirib bo‘lmaydi.');
         }
 
         $v = new Validator($request->json());

@@ -51,7 +51,7 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 - [x] 2 — Autentifikatsiya va aʼzolik — initData HMAC, Bearer sessiya (hash), getChatMember kesh 10 daq, pending oqimi, rate limit; 29 test
 - [x] 3 — Toʻylar va moliya API — CRUD, holatlar, mojaro 409, avanslar (+ DELETE), dashboard, kalendar, aʼzolar, sozlamalar; FinanceGuard sizish testlari; 52 test
 - [x] 4 — Telegram xabarlari va eslatmalar — MessageBuilder (oq roʻyxat), ReminderScheduler (dedupe, claim, qayta urinish), cron, remind-now, publish-button, health; 70 test
-- [ ] 5 — Frontend poydevori va dizayn tizimi
-- [ ] 6 — A'zo sahifalari
-- [ ] 7 — Owner ekranlari
+- [x] 5 — Frontend poydevori va dizayn tizimi — tokenlar (2 mavzu), Bodoni/Onest woff2, komponentlar, ikonkalar, api/auth/router/store/tg, sheet, toast, skeleton; CSP
+- [x] 6 — Aʼzo sahifalari — Bosh sahifa (chipta + intro), Kalendar, Toʻylar (filtr, cheksiz yuklash), Tafsilot (timeline, xarita, moliya)
+- [x] 7 — Owner ekranlari — forma (MainButton, mojaro sheet), avans, bekor/tiklash/arxiv, eslatma, Sozlamalar; 375×667 va 360 da skrinshot bilan tekshirildi
 - [ ] 8 — Hujjatlar, sinov, sayqal

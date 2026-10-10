@@ -22,10 +22,10 @@ final class ReminderController
         $id = (int) $request->param('id');
         $event = Services::events()->find($id) ?? throw HttpError::notFound();
         if (!in_array($event['status'], EventRepo::ACTIVE_STATUSES, true)) {
-            throw new HttpError(409, 'invalid_status', 'Bekor qilingan yoki arxivdagi toʻy uchun eslatma yuborilmaydi.');
+            throw new HttpError(409, 'invalid_status', 'Bekor qilingan yoki arxivdagi to‘y uchun eslatma yuborilmaydi.');
         }
         if (strtotime((string) $event['starts_at']) <= time()) {
-            throw new HttpError(409, 'event_started', 'Toʻy boshlanib boʻlgan — eslatma yuborilmaydi.');
+            throw new HttpError(409, 'event_started', 'To‘y boshlanib bo‘lgan — eslatma yuborilmaydi.');
         }
         // Guruhni spam qilmaslik uchun: bitta to'yga 10 daqiqada 3 tadan ko'p emas
         Services::rateLimiter()->enforce('remind:event:' . $id, 3, 600);
@@ -34,7 +34,7 @@ final class ReminderController
         Services::audit()->log($user['id'], 'reminder.manual', 'event', $id, ['title' => $event['title'], 'status' => $result['status']]);
 
         if ($result['status'] !== 'sent') {
-            throw new HttpError(502, 'telegram_error', 'Eslatma yuborilmadi. Botning guruhdagi huquqlarini tekshiring va qayta urinib koʻring.');
+            throw new HttpError(502, 'telegram_error', 'Eslatma yuborilmadi. Botning guruhdagi huquqlarini tekshiring va qayta urinib ko‘ring.');
         }
         return Response::ok(['status' => 'sent']);
     }

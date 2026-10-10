@@ -26,10 +26,10 @@ test('InitData: to\'g\'ri imzo qabul qilinadi', function (): void {
     assert_same('Ali', $res['user']['first_name']);
 });
 
-test('InitData: o\'zbekcha va maxsus belgilar (ʻ, &, =, +) bilan ishlaydi', function (): void {
+test('InitData: o\'zbekcha va maxsus belgilar (‘, &, =, +) bilan ishlaydi', function (): void {
     $v = new InitDataVerifier((string) config('BOT_TOKEN'));
-    $res = $v->verify(make_init_data(['id' => 7, 'first_name' => 'Gʻayrat & Oʻlmas = 1+1']));
-    assert_same('Gʻayrat & Oʻlmas = 1+1', $res['user']['first_name']);
+    $res = $v->verify(make_init_data(['id' => 7, 'first_name' => 'G‘ayrat & O‘lmas = 1+1']));
+    assert_same('G‘ayrat & O‘lmas = 1+1', $res['user']['first_name']);
 });
 
 test('InitData: boshqa token bilan imzolangan → 401', function (): void {

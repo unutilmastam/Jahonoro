@@ -15,7 +15,7 @@ use App\Telegram\TelegramException;
 final class GroupController
 {
     /**
-     * POST /group/publish-button — guruhga "TOʻYLAR JADVALI" URL tugmali xabar yuboradi va pin qiladi.
+     * POST /group/publish-button — guruhga "TO‘YLAR JADVALI" URL tugmali xabar yuboradi va pin qiladi.
      */
     public function publishButton(Request $request): Response
     {

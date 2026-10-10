@@ -88,7 +88,7 @@ final class ReminderScheduler
         $claim = bin2hex(random_bytes(16));
         $rows = $this->reminders->claimOne($id, $claim);
         if ($rows === []) {
-            return ['status' => 'failed', 'error' => 'Eslatmani band qilib boʻlmadi'];
+            return ['status' => 'failed', 'error' => 'Eslatmani band qilib bo‘lmadi'];
         }
         $result = $this->deliver($rows[0], $claim);
         $row = $this->reminders->find($id);
@@ -108,15 +108,15 @@ final class ReminderScheduler
         $event = $this->events->find((int) $row['event_id']);
 
         if ($event === null || !in_array($event['status'], EventRepo::ACTIVE_STATUSES, true)) {
-            $this->reminders->markCancelled($id, $claim, 'Toʻy faol emas');
+            $this->reminders->markCancelled($id, $claim, 'To‘y faol emas');
             return 'cancelled';
         }
         if (strtotime((string) $event['starts_at']) <= time()) {
-            $this->reminders->markCancelled($id, $claim, 'Toʻy boshlanib boʻlgan');
+            $this->reminders->markCancelled($id, $claim, 'To‘y boshlanib bo‘lgan');
             return 'cancelled';
         }
         if ($row['reminder_type'] === 'day_before' && $row['dedupe_key'] !== self::dedupeKey((int) $event['id'], (string) $event['starts_at'])) {
-            $this->reminders->markCancelled($id, $claim, 'Toʻy vaqti oʻzgargan');
+            $this->reminders->markCancelled($id, $claim, 'To‘y vaqti o‘zgargan');
             return 'cancelled';
         }
         if ($this->groupChatId === '') {

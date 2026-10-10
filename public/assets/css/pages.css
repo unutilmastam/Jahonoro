@@ -1,0 +1,394 @@
+/*
+ * JAHONORO — sahifalarga xos joylashuv (DESIGN.md 7-bo'lim).
+ */
+
+.section-title {
+  margin: var(--sp-8) 0 var(--sp-2);
+  padding: 0 var(--sp-1);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: 600;
+}
+
+/* ---------- Bosh sahifa ---------- */
+.home-head__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--tap);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--fs-logo);
+  font-weight: 500;
+  letter-spacing: var(--ls-logo);
+}
+
+.home-head__greet {
+  margin-top: var(--sp-1);
+  color: var(--text-2);
+}
+
+.home-ticket {
+  margin-top: var(--sp-6);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--sp-6);
+  padding: var(--sp-1) 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-1);
+}
+
+.stat + .stat {
+  padding-left: var(--sp-4);
+  border-left: var(--stroke) solid var(--line);
+}
+
+.stat__value {
+  font-size: var(--fs-stat);
+  line-height: var(--lh-time);
+  font-weight: 500;
+}
+
+.stat__label {
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  color: var(--text-2);
+}
+
+.home-section .day-header:first-of-type {
+  padding-top: var(--sp-1);
+}
+
+.home-section .block + .day-header {
+  margin-top: var(--sp-1);
+}
+
+.notice-block {
+  margin-top: var(--sp-6);
+}
+
+.debt-value {
+  font-size: var(--fs-money);
+  line-height: var(--lh-row-time);
+  font-weight: 500;
+  text-align: right;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.page--home .block-group {
+  margin-top: var(--sp-8);
+}
+
+/* ---------- Kalendar ---------- */
+.page--calendar .cal__day .section-title {
+  margin-top: var(--sp-6);
+}
+
+.picker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+
+.picker__year {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  font-weight: 500;
+}
+
+.picker__months {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.picker__month {
+  justify-content: center;
+  min-height: var(--control-h);
+  border-radius: var(--r-control);
+}
+
+/* ---------- To'ylar ---------- */
+.search-bar {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.search-bar__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-bar__input .input {
+  padding-right: var(--sp-3);
+}
+
+.input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.filter-btn {
+  position: relative;
+  width: var(--control-h);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.filter-btn .count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}
+
+.events-seg {
+  margin-top: var(--sp-3);
+}
+
+.agenda {
+  margin-top: var(--sp-2);
+}
+
+.agenda .block + .day-header {
+  margin-top: var(--sp-1);
+}
+
+.agenda__sentinel {
+  height: var(--stroke);
+}
+
+/* ---------- To'y tafsiloti ---------- */
+.detail-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-8);
+}
+
+.detail-head__chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+}
+
+.detail-head__more {
+  margin-left: auto;
+  margin-right: calc(var(--sp-2) * -1);
+  color: var(--text-2);
+}
+
+.detail-head__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.detail-head__date {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  color: var(--text-2);
+}
+
+.detail-head__sep {
+  color: var(--text-3);
+}
+
+.sk--title {
+  height: 24px;
+}
+
+/* Vaqt jadvali — vertikal timeline */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.timeline__item {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-6);
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0;
+  bottom: 0;
+  width: var(--stroke);
+  background: var(--line-strong);
+}
+
+.timeline__item:first-child::before {
+  top: 50%;
+}
+
+.timeline__item:last-child::before {
+  bottom: 50%;
+}
+
+.timeline__item:only-child::before {
+  display: none;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 var(--stroke) var(--text-3);
+}
+
+.timeline__time {
+  min-width: 64px;
+  font-size: var(--fs-row-time);
+  line-height: var(--lh-row-time);
+  font-weight: 500;
+}
+
+.timeline__label {
+  color: var(--text-2);
+}
+
+.timeline__item.is-main .timeline__dot {
+  background: var(--gold);
+  box-shadow: none;
+}
+
+.timeline__item.is-main .timeline__time,
+.timeline__item.is-main .timeline__label {
+  color: var(--gold-text);
+}
+
+.timeline__item.is-main .timeline__label {
+  font-weight: 500;
+}
+
+.block-sub {
+  min-height: 0;
+  padding-top: 0;
+  color: var(--text-2);
+  font-size: var(--fs-label);
+}
+
+.block-title--sub {
+  margin-top: var(--sp-4);
+}
+
+.block-actions {
+  margin-top: var(--sp-3);
+}
+
+.row--multiline .row__label {
+  white-space: pre-wrap;
+}
+
+.row--multiline .row__sub {
+  order: -1;
+}
+
+.row__trailing-btn {
+  margin-right: calc(var(--sp-2) * -1);
+  color: var(--text-3);
+}
+
+.block--inset {
+  background: var(--surface-2);
+}
+
+.block--inset .row {
+  min-height: 52px;
+}
+
+/* ---------- Forma ---------- */
+.event-form .page-title {
+  margin-bottom: var(--sp-2);
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.switch-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.switch-row__label {
+  font-size: var(--fs-body);
+}
+
+.select {
+  padding-right: var(--sp-8);
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-2) 50%), linear-gradient(135deg, var(--text-2) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.select--inline {
+  width: auto;
+  min-width: 104px;
+  flex-shrink: 0;
+}
+
+.sheet-form {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.conflict-list {
+  background: var(--surface-2);
+}
+
+/* ---------- Sozlamalar ---------- */
+.page--settings .page-title {
+  margin-bottom: var(--sp-6);
+}
+
+.member-row .avatar {
+  margin-right: var(--sp-1);
+}
+
+.member-row.is-muted .row__label {
+  color: var(--text-2);
+}
+
+.member-row:disabled {
+  cursor: default;
+}
+
+.member-row:disabled .row__chevron {
+  visibility: hidden;
+}
+
+.settings-system {
+  margin-top: var(--sp-8);
+}

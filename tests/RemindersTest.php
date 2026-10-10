@@ -182,7 +182,7 @@ test('Publish-button: xabar + pin, settings\'da message_id', function (): void {
     assert_same(true, $res->payload['data']['pinned']);
     $send = $bot->callsOf('sendMessage')[0]['params'];
     assert_same('https://t.me/JahonoroTestBot/jadval', $send['reply_markup']['inline_keyboard'][0][0]['url']);
-    assert_same('📅 TOʻYLAR JADVALI', $send['reply_markup']['inline_keyboard'][0][0]['text']);
+    assert_same('📅 TO‘YLAR JADVALI', $send['reply_markup']['inline_keyboard'][0][0]['text']);
     assert_same(1, count($bot->callsOf('pinChatMessage')));
     assert_same((string) $res->payload['data']['message_id'], Services::settings()->get('group_button_message_id'));
 });
