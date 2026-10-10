@@ -344,3 +344,11 @@ Markazda logotip "JAHONORO" Bodoni 32px, ostida bir qator: "Bu ilova faqat JAHON
 | --- | --- | --- |
 | 2026-10-10 | Bodoni Moda + Onest | Konsert afishasi xarakteri + o'qilishi yaxshi interfeys shrifti |
 | 2026-10-10 | Chipta — yagona yorqin element | Vaqt va joy — musiqachi uchun eng muhim ma'lumot |
+| 2026-10-10 | UI matnida `ʻ` (U+02BB) o'rniga `‘` (U+2018), `ʼ` o'rniga `’` (U+2019) — butun loyihada | Bodoni Moda woff2'da U+02BB gilfi yo'q (Onest'da bor); sarlavhalarda zaxira shrift aralashmasin |
+| 2026-10-10 | Telegram SDK `https://telegram.org/js/telegram-web-app.js` dan yuklanadi | Bu kutubxona emas, platformaning o'zi; Telegram klienti uni doim ochadi. Shrift, ikonka va boshqa hamma narsa o'zimizning hostingda |
+| 2026-10-10 | Vaqt jadvali nuqtalari soat bo'yicha tartiblanadi (teng bo'lsa 7-bo'limdagi tartib) | Nahor ertalab bo'lsa ro'yxat haqiqiy ketma-ketlikni ko'rsatsin |
+| 2026-10-10 | Qo'shimcha tokenlar: `--success-text`, `--warning-text`, `--danger-text`, `*-soft`, `--muted-soft` | 14% fon ustidagi kichik matn ikkala mavzuda ≥ 4.5:1 bo'lsin (kunduzgi: #24704F, #8A5F12, #B8322C; tungi xavfli matn #F07C75) |
+| 2026-10-10 | Chipta ichida `.theme-night` sinfi — tungi tokenlar qayta e'lon qilinadi | Chipta ikkala mavzuda ham tungi; teshiklar `--page-bg` bilan |
+| 2026-10-10 | Koordinata formada bitta maydon: "38.27, 67.89" yoki Google Maps havolasi | Telefonda ikki maydondan qulay; tasdiq switch'i faqat koordinata tanilsa yoqiladi |
+| 2026-10-10 | `#/styleguide` sahifasi yaratilmadi | 5–7-bosqichlar bitta sessiyada bajarildi; 7-bosqich uni baribir olib tashlaydi. Komponentlar haqiqiy sahifalarda tekshirildi |
+

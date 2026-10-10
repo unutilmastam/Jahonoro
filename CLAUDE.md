@@ -46,12 +46,13 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 
 ## Holat
 
-- [ ] 0 — Skelet va hosting sinovi
-- [ ] 1 — Ma'lumotlar bazasi
-- [ ] 2 — Autentifikatsiya va a'zolik
-- [ ] 3 — To'ylar va moliya API
-- [ ] 4 — Telegram xabarlari va eslatmalar
-- [ ] 5 — Frontend poydevori va dizayn tizimi
-- [ ] 6 — A'zo sahifalari
-- [ ] 7 — Owner ekranlari
-- [ ] 8 — Hujjatlar, sinov, sayqal
+- [x] 0 — Skelet va hosting sinovi — Core (Db, Router, Request, Response, Logger), `/api/ping`, .htaccess, logotipli index.html, 11 test; hostingda (jahonoro.itcode.uz, PHP 8.3.30, MySQL 8.0) `config`/`db`/`telegram_api` = ok
+- [x] 1 — Maʼlumotlar bazasi — 8 jadval, FK, CHECK, seed; MariaDB 10.11 da ikki marta import xatosiz
+- [x] 2 — Autentifikatsiya va aʼzolik — initData HMAC, Bearer sessiya (hash), getChatMember kesh 10 daq, pending oqimi, rate limit; 29 test
+- [x] 3 — Toʻylar va moliya API — CRUD, holatlar, mojaro 409, avanslar (+ DELETE), dashboard, kalendar, aʼzolar, sozlamalar; FinanceGuard sizish testlari; 52 test
+- [x] 4 — Telegram xabarlari va eslatmalar — MessageBuilder (oq roʻyxat), ReminderScheduler (dedupe, claim, qayta urinish), cron, remind-now, publish-button, health; 70 test
+- [x] 5 — Frontend poydevori va dizayn tizimi — tokenlar (2 mavzu), Bodoni/Onest woff2, komponentlar, ikonkalar, api/auth/router/store/tg, sheet, toast, skeleton; CSP
+- [x] 6 — Aʼzo sahifalari — Bosh sahifa (chipta + intro), Kalendar, Toʻylar (filtr, cheksiz yuklash), Tafsilot (timeline, xarita, moliya)
+- [x] 7 — Owner ekranlari — forma (MainButton, mojaro sheet), avans, bekor/tiklash/arxiv, eslatma, Sozlamalar; 375×667 va 360 da skrinshot bilan tekshirildi
+- [x] 8 — Hujjatlar, sinov, sayqal — docs/DEPLOY.md, docs/TESTING.md, README; DESIGN 12 tekshiruvi (kontrast, 44px, 360px, fokus, reduced-motion, tokenlar, ‘); hostingda sinov kutilmoqda
+- [x] + Guruhni ilovadan ulash — startgroup havola + bir martalik kod, getUpdates (webhooksiz), begona guruhdan chiqish, supergroup migratsiyasi; 78 test

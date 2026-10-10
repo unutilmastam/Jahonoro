@@ -1,0 +1,15 @@
+# Maxfiy sozlamalar — faqat serverda
+/config/config.php
+
+# Log va vaqtinchalik fayllar
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/
+/storage/cron.lock
+
+# Tizim fayllari
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,55 @@
+# JAHONORO — subdomen docroot (public/)
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+AddDefaultCharset utf-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Authorization (Bearer) sarlavhasini PHP'ga uzatish (CGI/FastCGI)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Faqat HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+    # Nuqta bilan boshlanadigan fayl va papkalar (.git, .env, .htaccess) — taqiq.
+    # .well-known AutoSSL (Let's Encrypt) tekshiruvi uchun ochiq qoladi.
+    RewriteCond %{REQUEST_URI} !^/\.well-known/
+    RewriteRule (^|/)\. - [F,L]
+
+    # /api/* → api/index.php
+    RewriteRule ^api/index\.php$ - [L]
+    RewriteRule ^api(/.*)?$ api/index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# Kesh: HTML har safar tekshiriladi, CSS/JS 1 soat, shriftlar 1 yil
+<IfModule mod_headers.c>
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+    <FilesMatch "\.(css|js|svg)$">
+        Header set Cache-Control "public, max-age=3600"
+    </FilesMatch>
+    <FilesMatch "\.woff2$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+AddType font/woff2 .woff2
+AddType text/javascript .js
+
+# Zaxira: mod_rewrite yo'q bo'lsa ham dotfile'lar ochilmasin
+<FilesMatch "^\.(htaccess|htpasswd|env|git.*|user\.ini)$">
+    Require all denied
+</FilesMatch>
