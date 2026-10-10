@@ -10,7 +10,8 @@ function sample_event(array $over = []): array
     return $over + [
         'id' => '5', 'title' => 'Kelin to‘yi — Aziz va Madina', 'event_type' => 'kelin',
         'event_date' => '2026-10-18', 'start_time' => '18:00:00', 'starts_at' => '2026-10-18 18:00:00',
-        'nahor_time' => null, 'abet_time' => '13:00:00', 'assembly_time' => '16:30:00', 'departure_time' => null,
+        'nahor_time' => null, 'abet_time' => '13:00:00', 'evening_time' => '18:00:00', 'assembly_time' => '16:30:00', 'departure_time' => null,
+        'home_address' => 'Denov, Bog‘ishamol 5', 'home_latitude' => null, 'home_longitude' => null,
         'soundcheck_time' => null, 'duration_min' => null, 'venue_name' => 'Sohil', 'venue_address' => 'Denov',
         'district' => 'Denov', 'latitude' => '38.270000', 'longitude' => '67.890000', 'location_verified' => '0',
         'total_price' => '12500000.00', 'financial_visibility' => 'inherit', 'client_name' => 'Karim aka',

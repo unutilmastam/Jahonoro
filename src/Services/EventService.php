@@ -42,19 +42,21 @@ final class EventService
             'title' => $v->string('title', 160, true, 'Sarlavha'),
             'event_type' => $v->enum('event_type', EventRepo::TYPES, 'kelin', 'To‘y turi'),
             'event_date' => $v->date('event_date', true, 'Sana'),
-            'start_time' => $v->time('start_time', true, 'Boshlanish vaqti'),
+            'assembly_time' => $v->time('assembly_time', false, 'Manzilda bo‘lish vaqti'),
             'nahor_time' => $v->time('nahor_time', false, 'Nahor vaqti'),
             'abet_time' => $v->time('abet_time', false, 'Abet vaqti'),
-            'assembly_time' => $v->time('assembly_time', false, 'Yig‘ilish vaqti'),
+            'evening_time' => $v->time('evening_time', false, 'Kech vaqti'),
             'departure_time' => $v->time('departure_time', false, 'Jo‘nash vaqti'),
             'soundcheck_time' => $v->time('soundcheck_time', false, 'Soundcheck vaqti'),
             'duration_min' => $v->int('duration_min', 0, 1440, false, 'Davomiylik (daqiqa)'),
             'venue_name' => $v->string('venue_name', 160, false, 'To‘yxona nomi') ?? '',
-            'venue_address' => $v->string('venue_address', 255, false, 'Manzil') ?? '',
+            'venue_address' => $v->string('venue_address', 255, false, 'To‘yxona manzili') ?? '',
             'district' => $v->string('district', 100, false, 'Tuman') ?? '',
-            'latitude' => $v->coordinate('latitude', 90, 'Kenglik'),
-            'longitude' => $v->coordinate('longitude', 180, 'Uzunlik'),
-            'location_verified' => $v->bool('location_verified') ? 1 : 0,
+            'latitude' => $v->coordinate('latitude', 90, 'To‘yxona nuqtasi'),
+            'longitude' => $v->coordinate('longitude', 180, 'To‘yxona nuqtasi'),
+            'home_address' => $v->string('home_address', 255, false, 'To‘y egasining manzili') ?? '',
+            'home_latitude' => $v->coordinate('home_latitude', 90, 'Uy nuqtasi'),
+            'home_longitude' => $v->coordinate('home_longitude', 180, 'Uy nuqtasi'),
             'total_price' => $v->money('total_price', false, false, 'Kelishilgan narx'),
             'financial_visibility' => $v->enum('financial_visibility', ['inherit', 'private', 'members'], 'inherit', 'Moliya ko‘rinishi'),
             'client_name' => $v->string('client_name', 128, false, 'Mijoz ismi') ?? '',
@@ -67,18 +69,34 @@ final class EventService
             'status' => $v->enum('status', ['planned', 'confirmed', 'completed'], 'planned', 'Holat'),
         ];
 
+        // Eski mijozlar faqat "start_time" yuboradi — u kech vaqti hisoblanadi
+        $legacyStart = $v->time('start_time', false, 'Boshlanish vaqti');
+        if ($data['nahor_time'] === null && $data['abet_time'] === null && $data['evening_time'] === null && $legacyStart !== null) {
+            $data['evening_time'] = $legacyStart;
+        }
+
         if ($data['client_phone'] !== '' && !preg_match('/^[0-9+()\-\s]{5,32}$/', $data['client_phone'])) {
             $v->fail('client_phone', 'Telefon raqami noto‘g‘ri. Masalan: +998 90 123 45 67.');
         }
         if (($data['latitude'] === null) !== ($data['longitude'] === null)) {
-            $v->fail('latitude', 'Kenglik va uzunlik birga kiritilsin.');
+            $v->fail('latitude', 'To‘yxona nuqtasini xaritadan qayta belgilang.');
         }
-        if ($data['latitude'] === null) {
-            $data['location_verified'] = 0;
+        if (($data['home_latitude'] === null) !== ($data['home_longitude'] === null)) {
+            $v->fail('home_latitude', 'Uy nuqtasini xaritadan qayta belgilang.');
+        }
+        // Nuqtani faqat owner xaritada o'zi qo'yadi — demak u tasdiqlangan
+        $data['location_verified'] = $data['latitude'] !== null ? 1 : 0;
+
+        $times = array_filter([$data['nahor_time'], $data['abet_time'], $data['evening_time']]);
+        if ($times === []) {
+            $v->fail('times', 'Nahor, abet yoki kech vaqtidan kamida bittasini kiriting.');
         }
 
         $v->throwIfErrors();
 
+        // Asosiy vaqt — kunning eng birinchi tadbiri (tartib, eslatma va mojaro shu bo'yicha)
+        sort($times);
+        $data['start_time'] = $times[0];
         $data['starts_at'] = $data['event_date'] . ' ' . $data['start_time'] . ':00';
         return $data;
     }

@@ -1,17 +1,45 @@
 /*
- * JAHONORO — komponentlar (DESIGN.md 6-bo'lim).
+ * JAHONORO — komponentlar (DESIGN.md 6-bo'lim). "Firuza va sahna".
  */
 
-/* =========================================================
-   Ikonka
-   ========================================================= */
 .icon {
   width: var(--icon-lg);
   height: var(--icon-lg);
 }
 
 /* =========================================================
-   6.5 Tugmalar
+   Logotip belgisi
+   ========================================================= */
+.logo-mark {
+  display: block;
+  color: var(--accent);
+}
+
+.logo-mark .logo-mark__note {
+  fill: var(--text);
+  stroke: var(--text);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.logo .logo-mark {
+  width: 34px;
+  height: 34px;
+}
+
+.logo__word {
+  font-family: var(--font-display);
+  font-size: var(--fs-logo);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-logo);
+}
+
+/* =========================================================
+   Tugmalar
    ========================================================= */
 .btn {
   position: relative;
@@ -23,7 +51,7 @@
   padding: 0 var(--sp-5);
   border-radius: var(--r-control);
   font-size: var(--fs-body);
-  font-weight: 500;
+  font-weight: 650;
   line-height: 1;
   white-space: nowrap;
   transition: transform var(--dur-press) var(--ease), background-color var(--dur-press) var(--ease), opacity var(--dur) var(--ease);
@@ -48,7 +76,7 @@
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .btn:active:not(:disabled)::after {
@@ -56,9 +84,8 @@
 }
 
 .btn--primary {
-  background: var(--gold);
-  color: var(--gold-ink);
-  font-weight: 600;
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .btn--secondary {
@@ -68,7 +95,7 @@
 
 .btn--ghost {
   background: transparent;
-  color: var(--gold-text);
+  color: var(--accent-text);
 }
 
 .btn--danger {
@@ -78,7 +105,7 @@
 
 .btn--sm {
   min-height: var(--control-h-sm);
-  padding: 0 var(--sp-3);
+  padding: 0 var(--sp-4);
   font-size: var(--fs-label);
   gap: var(--sp-1);
 }
@@ -97,7 +124,6 @@
   opacity: 0.45;
 }
 
-/* Yuklanayotganda: matn o'rnida spinner, kenglik o'zgarmaydi */
 .btn.is-loading > :not(.spinner) {
   visibility: hidden;
 }
@@ -116,6 +142,7 @@
   border: 2px solid currentColor;
   border-right-color: transparent;
   animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
 }
 
 @keyframes spin {
@@ -128,14 +155,18 @@
   justify-content: center;
   width: var(--tap);
   height: var(--tap);
-  border-radius: var(--r-control);
+  border-radius: 50%;
   color: var(--text);
   transition: background-color var(--dur-press) var(--ease), transform var(--dur-press) var(--ease);
 }
 
 .icon-btn:active {
   background: var(--surface-2);
-  transform: scale(0.96);
+  transform: scale(0.94);
+}
+
+.icon-btn--filled {
+  background: var(--surface-2);
 }
 
 .stack-buttons {
@@ -144,20 +175,25 @@
 }
 
 /* =========================================================
-   6.6 Chip
+   Chip
    ========================================================= */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
   height: var(--chip-h);
-  padding: 0 10px;
+  padding: 0 var(--sp-3);
   border-radius: var(--r-pill);
   font-size: var(--fs-label);
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.chip .icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 .chip--type {
@@ -170,19 +206,16 @@
   height: var(--chip-dot);
   border-radius: 50%;
   background: var(--type-color, var(--t-boshqa));
+  flex-shrink: 0;
 }
 
 .chip--status { background: var(--muted-soft); color: var(--text-2); }
 .chip--status.s-confirmed { background: var(--success-soft); color: var(--success-text); }
 .chip--status.s-cancelled { background: var(--danger-soft); color: var(--danger-text); }
 .chip--status.s-archived { background: var(--muted-soft); color: var(--text-3); }
-.chip--status.s-completed { background: var(--muted-soft); color: var(--text-2); }
-
-.chip--gold { background: var(--gold-soft); color: var(--gold-text); }
+.chip--accent { background: var(--accent-soft); color: var(--accent-text); }
 .chip--warning { background: var(--warning-soft); color: var(--warning-text); }
-.chip .icon { width: var(--icon-sm); height: var(--icon-sm); }
 
-/* To'y turi rangi — faqat chiziq, nuqta va chip */
 .t-kelin { --type-color: var(--t-kelin); }
 .t-nikoh { --type-color: var(--t-nikoh); }
 .t-sunnat { --type-color: var(--t-sunnat); }
@@ -191,7 +224,6 @@
 .t-korporativ { --type-color: var(--t-korp); }
 .t-boshqa { --type-color: var(--t-boshqa); }
 
-/* Tanlanadigan chip (filtrlar) */
 .choice-chips {
   display: flex;
   flex-wrap: wrap;
@@ -203,25 +235,25 @@
   align-items: center;
   gap: var(--sp-2);
   min-height: var(--tap);
-  padding: 0 var(--sp-3);
+  padding: 0 var(--sp-4);
   border-radius: var(--r-pill);
   background: var(--surface-2);
   color: var(--text);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: 600;
   border: var(--stroke) solid transparent;
-  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
 .choice[aria-pressed="true"],
 .choice[aria-checked="true"] {
-  background: var(--gold-soft);
-  border-color: var(--gold-line);
-  color: var(--gold-text);
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent-text);
 }
 
 /* =========================================================
-   Ro'yxat bloklari
+   Bloklar va qatorlar
    ========================================================= */
 .block-group {
   margin-top: var(--sp-8);
@@ -236,12 +268,12 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  margin: 0 0 var(--sp-2);
+  margin: 0 0 var(--sp-3);
   padding: 0 var(--sp-1);
-  font-size: var(--fs-label);
-  line-height: var(--lh-label);
-  font-weight: 600;
-  color: var(--text-2);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: 700;
+  color: var(--text);
 }
 
 .block {
@@ -262,7 +294,6 @@
   color: var(--text-2);
 }
 
-/* Oddiy qator */
 .row {
   position: relative;
   display: flex;
@@ -297,17 +328,25 @@
 
 .row__icon {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-2);
   color: var(--text-2);
+  flex-shrink: 0;
 }
 
 .row__icon .icon {
-  width: var(--icon-md);
-  height: var(--icon-md);
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 .row__main {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   min-width: 0;
   flex: 1;
 }
@@ -315,6 +354,7 @@
 .row__label {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
+  font-weight: 550;
   overflow-wrap: anywhere;
 }
 
@@ -351,14 +391,14 @@
 }
 
 /* =========================================================
-   6.2 To'y qatori
+   To'y qatori
    ========================================================= */
 .event-row {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  min-height: var(--row-min);
+  min-height: 68px;
   padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
   transition: background-color var(--dur-press) var(--ease);
 }
@@ -371,30 +411,36 @@ a.event-row:active {
   content: "";
   position: absolute;
   top: 0;
-  left: calc(var(--sp-4) + var(--bar) + var(--sp-3) + var(--row-time-w));
+  left: calc(var(--sp-4) + var(--row-time-w) + var(--sp-3));
   right: 0;
   height: var(--stroke);
   background: var(--line);
 }
 
 .event-row__bar {
-  align-self: stretch;
-  width: var(--bar);
-  border-radius: var(--r-pill);
-  background: var(--type-color, var(--t-boshqa));
-  flex-shrink: 0;
+  display: none;
 }
 
 .event-row__time {
+  position: relative;
   width: var(--row-time-w);
   flex-shrink: 0;
   font-size: var(--fs-row-time);
   line-height: var(--lh-row-time);
-  font-weight: 500;
+}
+
+.event-row__time::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: var(--bar);
+  margin-top: var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--type-color, var(--t-boshqa));
 }
 
 .event-row.is-today .event-row__time {
-  color: var(--gold-text);
+  color: var(--accent-text);
 }
 
 .event-row__body {
@@ -408,7 +454,7 @@ a.event-row:active {
 .event-row__title {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  font-weight: 500;
+  font-weight: 650;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -434,239 +480,245 @@ a.event-row:active {
 }
 
 .event-row.is-cancelled {
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 .event-row.is-cancelled .event-row__title {
   text-decoration: line-through;
 }
 
-/* =========================================================
-   6.3 Kun sarlavhasi
-   ========================================================= */
+/* Kun sarlavhasi */
 .day-header {
   position: sticky;
   top: 0;
   z-index: 5;
   margin: 0 calc(var(--page-x) * -1);
-  padding: var(--sp-4) calc(var(--page-x) + var(--sp-1)) var(--sp-2);
+  padding: var(--sp-5) calc(var(--page-x) + var(--sp-1)) var(--sp-2);
   font-size: var(--fs-label);
   line-height: var(--lh-label);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-2);
   background: var(--header-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 /* =========================================================
-   6.1 Keyingi to'y chiptasi
+   Keyingi to'y — firuza "afisha" (yagona yorqin element)
    ========================================================= */
-.ticket {
+.hero {
   position: relative;
-  border: var(--stroke) solid var(--gold-line);
+  padding: var(--sp-5) var(--sp-5) var(--sp-5);
   border-radius: var(--r-ticket);
-  background: linear-gradient(180deg, var(--ticket-top) 0%, var(--ticket-bottom) 100%);
-  color: var(--text);
+  background: var(--accent);
+  color: var(--accent-ink);
   overflow: hidden;
   isolation: isolate;
 }
 
-.ticket__link {
+/* Girih naqshi — faqat shu yerda */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../img/girih.svg");
+  background-size: 56px 56px;
+  background-position: right -8px top -8px;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: -1;
+  -webkit-mask-image: linear-gradient(200deg, var(--text) 0%, transparent 62%);
+  mask-image: linear-gradient(200deg, var(--text) 0%, transparent 62%);
+}
+
+.hero__link {
   position: absolute;
   inset: 0;
   z-index: 2;
   border-radius: inherit;
 }
 
-.ticket__link:active ~ .ticket__main,
-.ticket__link:active ~ .ticket__stub {
-  opacity: 0.85;
+.hero__link:focus-visible {
+  outline-color: var(--accent-ink);
+  outline-offset: -4px;
 }
 
-.ticket__main {
-  padding: var(--sp-5) var(--sp-5) var(--sp-4);
-}
-
-.ticket__top {
+.hero__top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--sp-3);
+  gap: var(--sp-2);
 }
 
-.ticket__day {
-  font-size: var(--fs-hero);
-  line-height: var(--lh-hero);
-  font-weight: 500;
-  color: var(--text);
-  margin-left: -2px;
+.hero__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: var(--chip-h);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--on-accent-soft);
+  font-size: var(--fs-label);
+  font-weight: 700;
 }
 
-.ticket__date {
-  margin-top: var(--sp-1);
-  font-size: var(--fs-body);
-  color: var(--text-2);
+.hero__kicker .chip__dot {
+  background: var(--accent-ink);
 }
 
-.ticket__venue {
+.hero__countdown {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  text-align: right;
+}
+
+.hero__date {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-4);
   margin-top: var(--sp-5);
 }
 
-.ticket__venue-name {
-  font-size: var(--fs-body);
-  font-weight: 500;
-  overflow-wrap: anywhere;
+.hero__day {
+  font-size: var(--fs-hero);
+  line-height: var(--lh-hero);
+  letter-spacing: -0.04em;
+  margin-left: -3px;
 }
 
-.ticket__venue-addr {
-  font-size: var(--fs-label);
-  line-height: var(--lh-label);
-  color: var(--text-2);
-  overflow-wrap: anywhere;
-}
-
-/* Perforatsiya va yon teshiklar */
-.ticket__perf {
-  position: relative;
-  height: var(--hole);
-  margin: 0;
-}
-
-.ticket__perf::before,
-.ticket__perf::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: var(--hole);
-  height: var(--hole);
-  border-radius: 50%;
-  background: var(--page-bg);
-  border: var(--stroke) solid var(--gold-line);
-  z-index: 1;
-}
-
-.ticket__perf::before {
-  left: calc(var(--hole) / -2 - var(--stroke));
-}
-
-.ticket__perf::after {
-  right: calc(var(--hole) / -2 - var(--stroke));
-}
-
-.ticket__perf-line {
-  position: absolute;
-  left: var(--sp-4);
-  right: var(--sp-4);
-  top: 50%;
-  border-top: var(--stroke) dashed var(--gold-line);
-  transform-origin: left center;
-}
-
-.ticket__stub {
-  position: relative;
-  padding: var(--sp-4) var(--sp-5) var(--sp-4);
-}
-
-/* Girih naqshi — faqat stub foni ichida, 4% */
-.ticket__stub::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("../img/girih.svg");
-  background-size: 48px 48px;
-  background-position: center top;
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.ticket__times {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--sp-4);
-}
-
-.ticket__cell {
+.hero__month {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-1);
+  padding-bottom: 6px;
+  font-size: var(--fs-body);
+  line-height: 1.25;
+  font-weight: 700;
 }
 
-.ticket__label {
-  font-size: var(--fs-label);
-  line-height: var(--lh-label);
-  color: var(--text-2);
+.hero__month span + span {
+  font-weight: 500;
+  color: var(--on-accent-2);
 }
 
-.ticket__time {
+.hero__title {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.hero__times {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.hero__time {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-radius: var(--r-cell);
+  background: var(--on-accent-soft);
+}
+
+/* Manzilda bo'lish — guruh uchun eng muhim vaqt, teskari rangda */
+.hero__time.is-arrival {
+  background: var(--accent-ink);
+  color: var(--accent);
+}
+
+.hero__time.is-arrival .hero__time-label {
+  color: var(--accent);
+}
+
+.hero__time-label {
+  font-size: var(--fs-micro);
+  line-height: var(--lh-micro);
+  font-weight: 700;
+  color: var(--on-accent-2);
+}
+
+.hero__time-value {
   font-size: var(--fs-time);
   line-height: var(--lh-time);
-  font-weight: 500;
 }
 
-.ticket__foot {
+.hero__foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
   margin-top: var(--sp-4);
-  min-height: var(--control-h-sm);
 }
 
-.ticket__foot .btn {
-  position: relative;
-  z-index: 3;
-}
-
-.ticket__countdown {
-  display: inline-flex;
+.hero__place {
+  display: flex;
   align-items: center;
   gap: var(--sp-2);
-  font-weight: 500;
-  color: var(--gold);
+  min-width: 0;
+  font-size: var(--fs-label);
+  font-weight: 600;
 }
 
-.ticket__dot {
-  width: var(--chip-dot);
-  height: var(--chip-dot);
+.hero__place .icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  flex-shrink: 0;
+}
+
+.hero__place span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero__btn {
+  position: relative;
+  z-index: 3;
+  background: var(--accent-ink);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+:root[data-theme="light"] .hero__btn {
+  color: var(--accent);
+}
+
+.hero--today .hero__countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero--today .hero__countdown::before {
+  content: "";
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--accent-ink);
+  animation: pulse 1.6s ease-in-out infinite;
 }
 
-/* Yagona orkestrlangan lahza: sessiyada birinchi ochilishda */
-.ticket--intro .ticket__day {
-  animation: rise 420ms var(--ease) both;
+@keyframes pulse {
+  50% { opacity: 0.35; }
 }
 
-.ticket--intro .ticket__cell:nth-child(1) {
-  animation: rise 420ms var(--ease) 60ms both;
-}
-
-.ticket--intro .ticket__cell:nth-child(2) {
-  animation: rise 420ms var(--ease) 120ms both;
-}
-
-.ticket--intro .ticket__perf-line {
-  animation: draw 300ms var(--ease) 120ms both;
-}
+/* Yagona orkestrlangan lahza */
+.hero--intro .hero__day { animation: rise 460ms var(--ease) both; }
+.hero--intro .hero__month { animation: rise 460ms var(--ease) 60ms both; }
+.hero--intro .hero__time:nth-child(1) { animation: rise 420ms var(--ease) 120ms both; }
+.hero--intro .hero__time:nth-child(2) { animation: rise 420ms var(--ease) 170ms both; }
+.hero--intro .hero__time:nth-child(3) { animation: rise 420ms var(--ease) 220ms both; }
+.hero--intro .hero__time:nth-child(4) { animation: rise 420ms var(--ease) 270ms both; }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
-}
-
-@keyframes draw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ticket--intro .ticket__day,
-  .ticket--intro .ticket__cell,
-  .ticket--intro .ticket__perf-line {
-    animation: fade 100ms linear both !important;
-  }
 }
 
 @keyframes fade {
@@ -674,8 +726,20 @@ a.event-row:active {
   to { opacity: 1; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hero--intro .hero__day,
+  .hero--intro .hero__month,
+  .hero--intro .hero__time {
+    animation: fade 100ms linear both !important;
+  }
+
+  .hero--today .hero__countdown::before {
+    animation: none;
+  }
+}
+
 /* =========================================================
-   6.4 Kalendar
+   Kalendar
    ========================================================= */
 .cal__head {
   display: flex;
@@ -689,10 +753,12 @@ a.event-row:active {
   align-items: center;
   gap: var(--sp-2);
   min-height: var(--tap);
+  white-space: nowrap;
   font-family: var(--font-display);
-  font-size: var(--fs-h1);
+  font-size: var(--fs-cal-title);
   line-height: var(--lh-h1);
-  font-weight: 500;
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-display);
   border-radius: var(--r-control);
 }
 
@@ -704,8 +770,11 @@ a.event-row:active {
 
 .cal__nav {
   display: flex;
-  gap: var(--sp-1);
-  margin-right: calc(var(--sp-2) * -1);
+  gap: var(--sp-2);
+}
+
+.cal__nav .icon-btn {
+  background: var(--surface);
 }
 
 .cal__weekdays,
@@ -715,16 +784,8 @@ a.event-row:active {
   gap: var(--sp-1) 2px;
 }
 
-/* Tor ekranda katak 44px dan kichik bo'lmasin */
-@media (max-width: 374px) {
-  .page--calendar {
-    padding-left: var(--sp-3);
-    padding-right: var(--sp-3);
-  }
-}
-
 .cal__weekdays {
-  margin-top: var(--sp-4);
+  margin-top: var(--sp-5);
   margin-bottom: var(--sp-1);
 }
 
@@ -732,13 +793,17 @@ a.event-row:active {
   text-align: center;
   font-size: var(--fs-micro);
   line-height: var(--lh-micro);
-  font-weight: 500;
+  font-weight: 700;
   color: var(--text-3);
 }
 
 .cal__viewport {
   overflow: hidden;
   touch-action: pan-y;
+  padding: var(--sp-2);
+  margin: 0 calc(var(--sp-2) * -1);
+  border-radius: var(--r-block);
+  background: var(--surface);
 }
 
 .cal__grid.is-sliding-next { animation: slide-next var(--dur) var(--ease); }
@@ -761,14 +826,13 @@ a.event-row:active {
   align-items: center;
   justify-content: flex-start;
   gap: var(--sp-1);
-  min-height: 48px;
+  min-height: 50px;
   padding-top: var(--sp-2);
   border-radius: var(--r-cell);
   font-size: var(--fs-body);
-  font-weight: 500;
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
   color: var(--text);
-  background: transparent;
   transition: background-color var(--dur) var(--ease);
 }
 
@@ -781,12 +845,12 @@ a.event-row:active {
 }
 
 .cal__cell.is-today {
-  box-shadow: inset 0 0 0 var(--stroke) var(--gold);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
 }
 
 .cal__cell.is-selected {
-  background: var(--gold);
-  color: var(--gold-ink);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .cal__dots {
@@ -804,18 +868,18 @@ a.event-row:active {
 }
 
 .cal__cell.is-selected .cal__dot {
-  box-shadow: 0 0 0 var(--stroke) var(--gold-ink);
+  box-shadow: 0 0 0 1.5px var(--accent-ink);
 }
 
 .cal__more {
   font-size: var(--fs-tiny);
   line-height: 1;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-2);
 }
 
 .cal__cell.is-selected .cal__more {
-  color: var(--gold-ink);
+  color: var(--accent-ink);
 }
 
 .cal__day-empty {
@@ -824,7 +888,7 @@ a.event-row:active {
 }
 
 /* =========================================================
-   6.7 Input va forma
+   Forma
    ========================================================= */
 .form-section {
   margin-top: var(--sp-8);
@@ -852,7 +916,7 @@ a.event-row:active {
 .field__label {
   font-size: var(--fs-label);
   line-height: var(--lh-label);
-  font-weight: 500;
+  font-weight: 650;
   color: var(--text-2);
 }
 
@@ -865,6 +929,7 @@ a.event-row:active {
 .field__error {
   font-size: var(--fs-label);
   line-height: var(--lh-label);
+  font-weight: 600;
   color: var(--danger-text);
 }
 
@@ -879,35 +944,36 @@ a.event-row:active {
 .select {
   width: 100%;
   min-height: var(--control-h);
-  padding: 0 var(--sp-3);
+  padding: 0 var(--sp-4);
   border-radius: var(--r-control);
-  border: var(--stroke) solid var(--line-strong);
+  border: var(--stroke) solid transparent;
   background: var(--surface-2);
   color: var(--text);
-  font-size: var(--fs-input); /* iOS: 16px dan kichik bo‘lsa fokusda kattalashtiradi */
+  font-size: var(--fs-input);
+  font-weight: 550;
   line-height: var(--lh-body);
   -webkit-appearance: none;
   appearance: none;
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 
 .input::placeholder,
 .textarea::placeholder {
   color: var(--text-3);
+  font-weight: 450;
 }
 
-.input:focus-visible,
-.textarea:focus-visible,
-.select:focus-visible,
 .input:focus,
 .textarea:focus,
 .select:focus {
-  outline: var(--focus-ring) solid var(--gold);
-  outline-offset: 0;
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface-3);
 }
 
 .textarea {
-  min-height: 96px;
-  padding: var(--sp-3);
+  min-height: 104px;
+  padding: var(--sp-3) var(--sp-4);
   resize: vertical;
 }
 
@@ -933,19 +999,20 @@ a.event-row:active {
 }
 
 .input-wrap .input {
-  padding-right: 56px;
+  padding-right: 60px;
 }
 
 .input-suffix {
   position: absolute;
-  right: var(--sp-3);
+  right: var(--sp-4);
   color: var(--text-2);
+  font-weight: 600;
   pointer-events: none;
 }
 
 .input-icon {
   position: absolute;
-  left: var(--sp-3);
+  left: var(--sp-4);
   color: var(--text-3);
   pointer-events: none;
 }
@@ -956,7 +1023,63 @@ a.event-row:active {
 }
 
 .input--with-icon {
-  padding-left: 40px;
+  padding-left: 46px;
+}
+
+/* Vaqt katagi (forma): ikonka + nom + soat */
+.time-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-radius: var(--r-control);
+  background: var(--surface-2);
+  border: var(--stroke) solid transparent;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.time-field:focus-within {
+  border-color: var(--accent);
+}
+
+.time-field__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.time-field__head .icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  color: var(--accent-text);
+}
+
+.time-field .input {
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: var(--fs-time);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-display);
+}
+
+.time-field .input:focus {
+  background: transparent;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-3);
+}
+
+.time-grid.has-error .time-field {
+  border-color: var(--danger);
 }
 
 /* Segment */
@@ -965,7 +1088,7 @@ a.event-row:active {
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
   gap: 2px;
-  padding: 2px;
+  padding: 3px;
   border-radius: var(--r-control);
   background: var(--surface-2);
 }
@@ -975,11 +1098,11 @@ a.event-row:active {
   align-items: center;
   justify-content: center;
   gap: var(--sp-1);
-  min-height: 40px;
+  min-height: 42px;
   padding: 0 var(--sp-2);
-  border-radius: calc(var(--r-control) - 2px);
+  border-radius: calc(var(--r-control) - 3px);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: 650;
   color: var(--text-2);
   text-align: center;
   transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
@@ -996,7 +1119,7 @@ a.event-row:active {
 }
 
 :root[data-theme="light"] .segment__item[aria-checked="true"] {
-  box-shadow: 0 0 0 var(--stroke) var(--line-strong);
+  box-shadow: var(--shadow-float);
 }
 
 /* Switch */
@@ -1024,8 +1147,7 @@ a.event-row:active {
   width: 100%;
   height: 100%;
   border-radius: var(--r-pill);
-  background: var(--surface-2);
-  box-shadow: inset 0 0 0 var(--stroke) var(--line-strong);
+  background: var(--surface-3);
   transition: background-color var(--dur) var(--ease);
 }
 
@@ -1036,45 +1158,219 @@ a.event-row:active {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--text-2);
+  background: var(--text);
   transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 
 .switch__input:checked + .switch__track {
-  background: var(--gold);
-  box-shadow: none;
+  background: var(--accent);
 }
 
 .switch__input:checked + .switch__track .switch__thumb {
   transform: translateX(20px);
-  background: var(--gold-ink);
+  background: var(--accent-ink);
 }
 
 .switch__input:focus-visible + .switch__track {
-  outline: var(--focus-ring) solid var(--gold);
+  outline: var(--focus-ring) solid var(--accent);
   outline-offset: var(--focus-ring);
 }
 
-/* Yopishqoq saqlash tugmasi (Telegram tashqarisida) */
 .sticky-action {
   position: sticky;
   bottom: 0;
   margin: var(--sp-8) calc(var(--page-x) * -1) 0;
   padding: var(--sp-3) var(--page-x) calc(var(--sp-3) + var(--safe-bottom));
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: var(--stroke) solid var(--line);
+  background: var(--header-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   z-index: 10;
 }
 
 /* =========================================================
-   6.8 Bottom sheet
+   Joy kartasi va xarita
+   ========================================================= */
+.place {
+  display: flex;
+  flex-direction: column;
+}
+
+.place + .place {
+  border-top: var(--stroke) solid var(--line);
+}
+
+.place__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+
+.place__map {
+  position: relative;
+  display: block;
+  height: var(--map-h);
+  margin: 0 var(--sp-4) var(--sp-3);
+  border-radius: var(--r-cell);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.map-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4) var(--sp-4);
+}
+
+.warning-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4) var(--sp-3);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: 600;
+  color: var(--warning-text);
+}
+
+.warning-line .icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* Leaflet xaritasi mavzuga moslanadi */
+.map {
+  width: 100%;
+  height: 100%;
+  background: var(--surface-2);
+  font-family: var(--font-text);
+}
+
+.map .leaflet-tile-pane {
+  filter: var(--map-filter);
+}
+
+.map .leaflet-control-attribution {
+  background: var(--header-bg);
+  color: var(--text-3);
+  font-size: var(--fs-tiny);
+}
+
+.map .leaflet-control-attribution a {
+  color: var(--text-2);
+}
+
+.map .leaflet-control-zoom a {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.map-pin {
+  position: relative;
+  width: 34px;
+  height: 44px;
+}
+
+.map-pin::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ink);
+}
+
+.map-pin::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-ink);
+}
+
+/* Xaritadan belgilash (sheet ichida) */
+.map-picker {
+  position: relative;
+  height: var(--map-picker-h);
+  min-height: 280px;
+  border-radius: var(--r-block);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.map-picker__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 500;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
+.map-picker__locate {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  z-index: 500;
+  box-shadow: var(--shadow-float);
+}
+
+.map-picker__hint {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-label);
+  color: var(--text-2);
+  text-align: center;
+}
+
+.map-picker__coords {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-micro);
+  color: var(--text-3);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Formadagi joy bloki */
+.place-field {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.place-field__map {
+  position: relative;
+  height: 132px;
+  border-radius: var(--r-control);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.place-field__actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.place-field__actions .btn {
+  flex: 1;
+}
+
+/* =========================================================
+   Bottom sheet
    ========================================================= */
 .sheet-layer {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -1092,7 +1388,7 @@ a.event-row:active {
   position: relative;
   display: flex;
   flex-direction: column;
-  max-height: calc(var(--vh) - var(--safe-top) - var(--sp-10));
+  max-height: calc(var(--vh) - var(--safe-top) - var(--sp-8));
   padding-bottom: var(--safe-bottom);
   background: var(--surface);
   border-radius: var(--r-sheet) var(--r-sheet) 0 0;
@@ -1102,17 +1398,9 @@ a.event-row:active {
   will-change: transform;
 }
 
-.sheet-layer.is-open .sheet-backdrop {
-  opacity: 1;
-}
-
-.sheet-layer.is-open .sheet {
-  transform: none;
-}
-
-.sheet-layer.is-closing .sheet {
-  transform: translateY(100%);
-}
+.sheet-layer.is-open .sheet-backdrop { opacity: 1; }
+.sheet-layer.is-open .sheet { transform: none; }
+.sheet-layer.is-closing .sheet { transform: translateY(100%); }
 
 @media (prefers-reduced-motion: reduce) {
   .sheet {
@@ -1121,13 +1409,8 @@ a.event-row:active {
     transition: opacity 100ms linear !important;
   }
 
-  .sheet-layer.is-open .sheet {
-    opacity: 1;
-  }
-
-  .sheet-layer.is-closing .sheet {
-    opacity: 0;
-  }
+  .sheet-layer.is-open .sheet { opacity: 1; }
+  .sheet-layer.is-closing .sheet { opacity: 0; }
 }
 
 .sheet__handle {
@@ -1144,22 +1427,25 @@ a.event-row:active {
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  padding: var(--sp-2) var(--sp-2) 0 var(--page-x);
+  padding: var(--sp-2) var(--sp-3) 0 var(--page-x);
   flex-shrink: 0;
 }
 
 .sheet__title {
+  font-family: var(--font-display);
   font-size: var(--fs-h2);
   line-height: var(--lh-h2);
-  font-weight: 600;
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-display);
 }
 
 .sheet__close {
   color: var(--text-2);
+  background: var(--surface-2);
 }
 
 .sheet__body {
-  padding: var(--sp-4) var(--page-x) var(--sp-4);
+  padding: var(--sp-4) var(--page-x);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -1179,13 +1465,12 @@ a.event-row:active {
 }
 
 .sheet__label {
-  margin-bottom: var(--sp-2);
+  margin-bottom: var(--sp-3);
   font-size: var(--fs-label);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-2);
 }
 
-/* Menyu (sheet ichida) */
 .menu {
   display: flex;
   flex-direction: column;
@@ -1199,10 +1484,11 @@ a.event-row:active {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  min-height: 56px;
+  min-height: 58px;
   padding: 0 var(--sp-4);
   text-align: left;
   font-size: var(--fs-body);
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -1232,14 +1518,14 @@ a.event-row:active {
 }
 
 /* =========================================================
-   6.9 Toast
+   Toast
    ========================================================= */
 .toast-root {
   position: fixed;
   left: var(--page-x);
   right: var(--page-x);
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-3));
-  z-index: 200;
+  bottom: calc(var(--tabbar-h) + var(--tabbar-gap) * 2 + var(--safe-bottom));
+  z-index: 2000;
   display: flex;
   justify-content: center;
   pointer-events: none;
@@ -1255,11 +1541,12 @@ body.no-tabbar .toast-root {
   gap: var(--sp-2);
   max-width: 100%;
   min-height: var(--control-h);
-  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-3);
-  border-radius: var(--r-control);
-  background: var(--surface-2);
-  border: var(--stroke) solid var(--line-strong);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--surface-3);
   color: var(--text);
+  font-weight: 600;
+  box-shadow: var(--shadow-float);
   pointer-events: auto;
   opacity: 0;
   transform: translateY(8px);
@@ -1288,12 +1575,12 @@ body.no-tabbar .toast-root {
   flex-shrink: 0;
   min-height: var(--tap);
   padding: 0 var(--sp-2);
-  color: var(--gold-text);
-  font-weight: 600;
+  color: var(--accent-text);
+  font-weight: 700;
 }
 
 /* =========================================================
-   6.10 Bo'sh holat
+   Bo'sh holat
    ========================================================= */
 .empty {
   display: flex;
@@ -1305,20 +1592,25 @@ body.no-tabbar .toast-root {
 }
 
 .empty__icon {
-  width: 32px;
-  height: 32px;
-  color: var(--text-3);
+  width: 56px;
+  height: 56px;
+  padding: 14px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text-2);
   margin-bottom: var(--sp-2);
 }
 
 .empty__title {
+  font-family: var(--font-display);
   font-size: var(--fs-h2);
   line-height: var(--lh-h2);
-  font-weight: 600;
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-display);
 }
 
 .empty__text {
-  max-width: 32ch;
+  max-width: 30ch;
   color: var(--text-2);
 }
 
@@ -1328,17 +1620,17 @@ body.no-tabbar .toast-root {
 
 .empty--ticket {
   border-radius: var(--r-ticket);
-  border: var(--stroke) dashed var(--line-strong);
+  background: var(--surface);
 }
 
 /* =========================================================
-   6.11 Skeleton
+   Skeleton
    ========================================================= */
 .sk {
   display: block;
   position: relative;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 8px;
   background: var(--surface-2);
 }
 
@@ -1355,47 +1647,49 @@ body.no-tabbar .toast-root {
   to { transform: translateX(100%); }
 }
 
-.sk--hero { width: 64px; height: 64px; }
-.sk--chip { width: 96px; height: var(--chip-h); border-radius: var(--r-pill); }
-.sk--time { width: 88px; height: 34px; margin-top: 22px; }
-.sk--rowtime { width: var(--row-time-w); height: 22px; flex-shrink: 0; }
+.sk--hero { width: 96px; height: 76px; }
+.sk--chip { width: 108px; height: var(--chip-h); border-radius: var(--r-pill); }
+.sk--time { height: 60px; border-radius: var(--r-cell); }
+.sk--rowtime { width: var(--row-time-w); height: 18px; flex-shrink: 0; }
 .sk--line { height: 12px; margin: 5px 0; }
 .sk--w40 { width: 40%; }
 .sk--w60 { width: 60%; }
 .sk--w70 { width: 70%; }
 .sk--w80 { width: 80%; }
 
-.ticket--skeleton .ticket__perf-line {
+.hero--skeleton {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.hero--skeleton::before {
   display: none;
 }
 
-.event-row--skeleton .event-row__bar {
-  background: var(--surface-2);
-}
-
 /* =========================================================
-   6.12 Pastki navigatsiya
+   Pastki navigatsiya — suzuvchi panel
    ========================================================= */
 .tabbar {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: var(--tabbar-gap);
+  right: var(--tabbar-gap);
+  bottom: calc(var(--tabbar-gap) + var(--safe-bottom));
   z-index: 50;
-  padding-bottom: var(--safe-bottom);
+  border-radius: var(--r-pill);
   background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: var(--stroke) solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: var(--shadow-float), inset 0 0 0 var(--stroke) var(--line);
 }
 
 .tabbar__inner {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  max-width: 640px;
+  max-width: 560px;
   margin: 0 auto;
   height: var(--tabbar-h);
+  padding: 6px;
 }
 
 .tabbar__item {
@@ -1405,43 +1699,31 @@ body.no-tabbar .toast-root {
   align-items: center;
   justify-content: center;
   gap: 2px;
+  border-radius: var(--r-pill);
   color: var(--text-2);
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 
-.tabbar__item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 20px;
-  height: 2px;
-  margin-left: -10px;
-  border-radius: 0 0 2px 2px;
-  background: var(--gold);
-  opacity: 0;
-  transition: opacity var(--dur) var(--ease);
+.tabbar__item .icon {
+  width: 22px;
+  height: 22px;
 }
 
 .tabbar__item.is-active {
-  color: var(--gold-text);
-}
-
-.tabbar__item.is-active::before {
-  opacity: 1;
+  color: var(--accent-text);
+  background: var(--accent-soft);
 }
 
 .tabbar__label {
   font-size: var(--fs-micro);
   line-height: var(--lh-micro);
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* Owner: "+" tugma (navigatsiyadan 16px yuqorida) */
 .fab {
   position: fixed;
-  right: var(--page-x);
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-4));
+  right: calc(var(--tabbar-gap) + 4px);
+  bottom: calc(var(--tabbar-h) + var(--tabbar-gap) * 2 + var(--safe-bottom) + var(--sp-2));
   z-index: 40;
   display: inline-flex;
   align-items: center;
@@ -1449,13 +1731,14 @@ body.no-tabbar .toast-root {
   width: var(--fab);
   height: var(--fab);
   border-radius: 50%;
-  background: var(--gold);
-  color: var(--gold-ink);
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-float);
   transition: transform var(--dur-press) var(--ease);
 }
 
 .fab:active {
-  transform: scale(0.96);
+  transform: scale(0.94);
 }
 
 .fab .icon {
@@ -1464,13 +1747,14 @@ body.no-tabbar .toast-root {
 }
 
 /* =========================================================
-   6.13 Moliya bloki
+   Moliya
    ========================================================= */
 .money-row .row__value {
   font-family: var(--font-display);
   font-size: var(--fs-money);
   line-height: var(--lh-row-time);
-  font-weight: 500;
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-display);
   color: var(--text);
   font-variant-numeric: lining-nums tabular-nums;
   max-width: 65%;
@@ -1478,10 +1762,14 @@ body.no-tabbar .toast-root {
 
 .money-row--paid .row__value {
   color: var(--success-text);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .money-progress {
-  height: 3px;
+  height: 6px;
   margin: 0 var(--sp-4) var(--sp-4);
   border-radius: var(--r-pill);
   background: var(--surface-2);
@@ -1491,41 +1779,11 @@ body.no-tabbar .toast-root {
 .money-progress__bar {
   height: 100%;
   border-radius: inherit;
-  background: var(--gold);
+  background: var(--accent);
   transform-origin: left center;
 }
 
-/* =========================================================
-   6.14 Xarita tugmalari
-   ========================================================= */
-.map-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-4) var(--sp-4);
-}
-
-.row + .map-actions {
-  padding-top: 0;
-}
-
-.warning-line {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-4) 0;
-  font-size: var(--fs-label);
-  line-height: var(--lh-label);
-  color: var(--warning-text);
-}
-
-.warning-line .icon {
-  width: var(--icon-sm);
-  height: var(--icon-sm);
-  margin-top: 1px;
-}
-
-/* Avatar */
+/* Avatar va belgilar */
 .avatar {
   display: inline-flex;
   align-items: center;
@@ -1534,18 +1792,18 @@ body.no-tabbar .toast-root {
   height: var(--avatar);
   border-radius: 50%;
   background: var(--surface-2);
-  color: var(--text-2);
-  font-weight: 600;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: var(--fw-display);
   font-size: var(--fs-label);
   flex-shrink: 0;
 }
 
-/* Kichik oltin belgi (kutayotgan a'zo) */
 .badge-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--accent);
   flex-shrink: 0;
 }
 
@@ -1557,9 +1815,13 @@ body.no-tabbar .toast-root {
   height: 18px;
   padding: 0 5px;
   border-radius: var(--r-pill);
-  background: var(--gold);
-  color: var(--gold-ink);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-size: var(--fs-badge);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
+}
+
+.map-picker__paste {
+  margin-top: var(--sp-3);
 }

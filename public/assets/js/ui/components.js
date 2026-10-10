@@ -115,7 +115,7 @@ export function listBlock(title, ...children) {
 export function eventRow(ev, { today, href } = {}) {
   const cancelled = ev.status === 'cancelled';
   const isToday = today && ev.event_date === today;
-  const place = [ev.venue_name, ev.district].filter(Boolean).join(', ');
+  const place = placeLine(ev);
   return h('a', {
     class: `event-row t-${ev.event_type}${cancelled ? ' is-cancelled' : ''}${isToday ? ' is-today' : ''}`,
     href: href ?? `#/events/${ev.id}`,
@@ -127,6 +127,51 @@ export function eventRow(ev, { today, href } = {}) {
     place ? h('span', { class: 'event-row__place' }, place) : null),
   cancelled ? statusChip('cancelled') : null,
   h('span', { class: 'event-row__chevron' }, icon('chevron-right', { size: 20 })));
+}
+
+/** Qatorda ko'rinadigan joy: to'yxona yoki uy. */
+export function placeLine(ev) {
+  const venue = [ev.venue_name, ev.district].filter(Boolean).join(', ');
+  return venue || ev.home_address || '';
+}
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/**
+ * JAHONORO belgisi: peshtoq (ravoq) ichida nota. Rang — currentColor + .logo-mark__note.
+ */
+export function logoMark({ size = 34, label } = {}) {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 48 48');
+  svg.setAttribute('width', String(size));
+  svg.setAttribute('height', String(size));
+  svg.setAttribute('class', 'logo-mark');
+  if (label) {
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', label);
+  } else {
+    svg.setAttribute('aria-hidden', 'true');
+  }
+  const add = (tag, attrs) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+    svg.appendChild(el);
+    return el;
+  };
+  // Peshtoq: o'tkir uchli ravoq
+  add('path', { d: 'M9 44V24.5C9 15.5 15.2 8.4 24 3.5 32.8 8.4 39 15.5 39 24.5V44', fill: 'none', stroke: 'currentColor', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  // Nota (J shaklida)
+  add('path', { d: 'M28.5 15v16.2', fill: 'none', 'stroke-width': 3, 'stroke-linecap': 'round', class: 'logo-mark__note' });
+  add('path', { d: 'M28.5 15c2.6.4 4.8 2 5.6 4.6', fill: 'none', 'stroke-width': 3, 'stroke-linecap': 'round', class: 'logo-mark__note' });
+  add('ellipse', { cx: 23.6, cy: 32, rx: 5.4, ry: 4.4, transform: 'rotate(-18 23.6 32)', class: 'logo-mark__note', 'stroke-width': 0 });
+  return svg;
+}
+
+/** Logotip: belgi + JAHONORO yozuvi. */
+export function logo() {
+  return h('span', { class: 'logo', role: 'img', 'aria-label': 'JAHONORO' },
+    logoMark(),
+    h('span', { class: 'logo__word', 'aria-hidden': 'true' }, 'JAHONORO'));
 }
 
 export function dayHeader(label) {

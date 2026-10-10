@@ -30,16 +30,16 @@ AddDefaultCharset utf-8
     Header always set X-Content-Type-Options "nosniff"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
-    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
 </IfModule>
 
-# Kesh: HTML har safar tekshiriladi, CSS/JS 1 soat, shriftlar 1 yil
+# Kesh: HTML/CSS/JS har safar tekshiriladi (yangilanish darhol yetib boradi), shriftlar 1 yil
 <IfModule mod_headers.c>
     <FilesMatch "\.html$">
         Header set Cache-Control "no-cache"
     </FilesMatch>
     <FilesMatch "\.(css|js|svg)$">
-        Header set Cache-Control "public, max-age=3600"
+        Header set Cache-Control "no-cache"
     </FilesMatch>
     <FilesMatch "\.woff2$">
         Header set Cache-Control "public, max-age=31536000, immutable"

@@ -14,15 +14,15 @@ final class FinanceGuard
 {
     /** Hamma ko'radigan maydonlar (tafsilot). */
     private const PUBLIC_FIELDS = [
-        'id', 'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'nahor_time', 'abet_time',
+        'id', 'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'nahor_time', 'abet_time', 'evening_time',
         'assembly_time', 'departure_time', 'soundcheck_time', 'duration_min', 'venue_name', 'venue_address',
-        'district', 'performance_notes', 'equipment_notes', 'dress_code', 'schedule_notes', 'status', 'updated_at',
+        'district', 'home_address', 'performance_notes', 'equipment_notes', 'dress_code', 'schedule_notes', 'status', 'updated_at',
     ];
 
     /** Ro'yxat qatori uchun. */
-    private const ROW_FIELDS = ['id', 'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'venue_name', 'venue_address', 'district', 'status'];
+    private const ROW_FIELDS = ['id', 'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'nahor_time', 'abet_time', 'evening_time', 'assembly_time', 'venue_name', 'venue_address', 'district', 'home_address', 'status'];
 
-    private const TIME_FIELDS = ['start_time', 'nahor_time', 'abet_time', 'assembly_time', 'departure_time', 'soundcheck_time'];
+    private const TIME_FIELDS = ['start_time', 'nahor_time', 'abet_time', 'evening_time', 'assembly_time', 'departure_time', 'soundcheck_time'];
 
     public function __construct(private readonly bool $globalVisibleToMembers)
     {
@@ -56,6 +56,10 @@ final class FinanceGuard
         $showCoords = ($verified || $isOwner) && $event['latitude'] !== null && $event['longitude'] !== null;
         $out['latitude'] = $showCoords ? (float) $event['latitude'] : null;
         $out['longitude'] = $showCoords ? (float) $event['longitude'] : null;
+        // Uy nuqtasini ham faqat owner xaritada qo'yadi
+        $hasHome = ($event['home_latitude'] ?? null) !== null && ($event['home_longitude'] ?? null) !== null;
+        $out['home_latitude'] = $hasHome ? (float) $event['home_latitude'] : null;
+        $out['home_longitude'] = $hasHome ? (float) $event['home_longitude'] : null;
 
         $visibility = (string) ($event['financial_visibility'] ?? 'inherit');
         $effective = self::effectiveVisibility($visibility, $this->globalVisibleToMembers);

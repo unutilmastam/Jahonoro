@@ -56,6 +56,8 @@ export function openSheet({ title, content, footer, onClose, label }) {
   let startY = null;
   let delta = 0;
   const onStart = (e) => {
+    // Xarita ichidagi surish sheet'ni yopmasin
+    if (e.target.closest('.map-picker, .leaflet-container')) return;
     const body = panel.querySelector('.sheet__body');
     if (body && body.scrollTop > 0 && !e.target.closest('.sheet__handle, .sheet__head')) return;
     startY = e.touches[0].clientY;

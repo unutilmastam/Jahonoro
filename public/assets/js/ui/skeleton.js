@@ -5,15 +5,11 @@ import { h, clear } from './components.js';
 const bar = (cls) => h('span', { class: `sk ${cls}` });
 
 export function ticketSkeleton() {
-  return h('div', { class: 'ticket ticket--skeleton theme-night', 'aria-hidden': 'true' },
-    h('div', { class: 'ticket__main' },
-      h('div', { class: 'ticket__top' }, bar('sk--hero'), bar('sk--chip')),
-      bar('sk--line sk--w40'),
-      h('div', { class: 'ticket__venue' }, bar('sk--line sk--w60'), bar('sk--line sk--w80'))),
-    h('div', { class: 'ticket__perf' }),
-    h('div', { class: 'ticket__stub' },
-      h('div', { class: 'ticket__times' }, bar('sk--time'), bar('sk--time')),
-      bar('sk--line sk--w40')));
+  return h('div', { class: 'hero hero--skeleton', 'aria-hidden': 'true' },
+    h('div', { class: 'hero__top' }, bar('sk--chip'), bar('sk--line sk--w40')),
+    h('div', { class: 'hero__date' }, bar('sk--hero')),
+    bar('sk--line sk--w70'),
+    h('div', { class: 'hero__times' }, bar('sk--time'), bar('sk--time'), bar('sk--time')));
 }
 
 export function rowsSkeleton(count = 3) {

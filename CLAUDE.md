@@ -25,7 +25,8 @@ Bu repo: JAHONORO musiqa guruhi (1 rahbar + 8 a'zo) uchun to'ylar jadvali Telegr
 - PHP 8.2, framework yo'q, Composer'siz (qo'lda PSR-4 autoload `src/bootstrap.php` da). `declare(strict_types=1);`.
 - MySQL/MariaDB, faqat PDO prepared, `ERRMODE_EXCEPTION`, `EMULATE_PREPARES=false`.
 - Frontend: vanilla JS ES modules, build bosqichi yo'q, npm paket yo'q. Tashqi CDN yo'q — shriftlar va ikonkalar repoda.
-- Shriftlar (Bodoni Moda, Onest) — Google Fonts'dan woff2 yuklab `public/assets/fonts/` ga qo'y (OFL litsenziyasi bilan). Tarmoq bo'lmasa foydalanuvchiga qanday yuklashni ayt.
+- Shriftlar (Unbounded, Manrope) — woff2, `public/assets/fonts/` da (OFL litsenziyasi bilan).
+- Xarita: Leaflet repoda (`assets/vendor/leaflet`), plitkalar CARTO'dan (CSP'da faqat `*.basemaps.cartocdn.com`). Boshqa tashqi kutubxona yo'q.
 - UI matni faqat o'zbek lotin, `DESIGN.md` 10-bo'lim lug'ati bo'yicha. Kod identifikatorlari inglizcha.
 - Ranglar, o'lchamlar faqat `tokens.css` o'zgaruvchilari orqali.
 - Hosting: cPanel shared (hostmaster.uz). Doimiy jarayon, Docker, Node server yo'q. Fon ishlari faqat cron orqali.
@@ -42,7 +43,7 @@ Bu repo: JAHONORO musiqa guruhi (1 rahbar + 8 a'zo) uchun to'ylar jadvali Telegr
 
 ## Dizayn darajasi
 
-Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — konsert afishasi va sahna orqasi; yagona yorqin element — "Keyingi to'y" chiptasi. Shubha bo'lganda: kamroq bezak, kattaroq raqam, aniqroq ierarxiya. `DESIGN.md` 11-bo'limdagi "Qilinmaydi" ro'yxatini buzma.
+Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — "Firuza va sahna": issiq qora + firuza, Unbounded raqamlar; yagona yorqin element — firuza "Keyingi to'y" kartasi. Shubha bo'lganda: kamroq bezak, kattaroq raqam, aniqroq ierarxiya. `DESIGN.md` 11-bo'limdagi "Qilinmaydi" ro'yxatini buzma.
 
 ## Holat
 
@@ -56,3 +57,4 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 - [x] 7 — Owner ekranlari — forma (MainButton, mojaro sheet), avans, bekor/tiklash/arxiv, eslatma, Sozlamalar; 375×667 va 360 da skrinshot bilan tekshirildi
 - [x] 8 — Hujjatlar, sinov, sayqal — docs/DEPLOY.md, docs/TESTING.md, README; DESIGN 12 tekshiruvi (kontrast, 44px, 360px, fokus, reduced-motion, tokenlar, ‘); hostingda sinov kutilmoqda
 - [x] + Guruhni ilovadan ulash — startgroup havola + bir martalik kod, getUpdates (webhooksiz), begona guruhdan chiqish, supergroup migratsiyasi; 78 test
+- [x] v2 — Foydalanuvchi talabi: vaqtlar (Manzilda bo‘lish/Nahor/Abet/Kech), 2 joy (to‘yxona + uy) xaritadan belgilash, yangi dizayn "Firuza va sahna", yangi logotip; migratsiya 003; 80 test

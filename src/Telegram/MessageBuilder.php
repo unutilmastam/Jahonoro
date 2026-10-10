@@ -44,22 +44,22 @@ final class MessageBuilder
             default => '🎵 TO‘Y ESLATMASI',
         };
 
-        $place = implode(', ', array_filter([
+        $venue = implode(', ', array_filter([
             trim((string) ($event['venue_name'] ?? '')),
             trim((string) ($event['venue_address'] ?? '')),
             trim((string) ($event['district'] ?? '')),
         ], static fn (string $s): bool => $s !== ''));
+        $home = trim((string) ($event['home_address'] ?? ''));
 
         $lines = [
             ['📅', 'Sana', self::dateUz($date, (int) substr($today, 0, 4))],
-            ['⏰', 'Boshlanish', self::time($event['start_time'] ?? null)],
+            ['📍', 'Manzilda bo‘lish', self::time($event['assembly_time'] ?? null)],
             ['🍽', 'Nahor', self::time($event['nahor_time'] ?? null)],
             ['🍽', 'Abet', self::time($event['abet_time'] ?? null)],
-            ['👥', 'Yig‘ilish', self::time($event['assembly_time'] ?? null)],
-            ['🚐', 'Jo‘nash', self::time($event['departure_time'] ?? null)],
-            ['🎚', 'Soundcheck', self::time($event['soundcheck_time'] ?? null)],
+            ['🌙', 'Kech', self::time($event['evening_time'] ?? null)],
             ['💍', 'Turi', self::TYPE_LABELS[(string) ($event['event_type'] ?? '')] ?? ''],
-            ['📍', 'Manzil', $place],
+            ['🏛', 'To‘yxona', $venue],
+            ['🏠', 'To‘y egasining uyi', $home],
             ['👔', 'Dress code', trim((string) ($event['dress_code'] ?? ''))],
         ];
 
@@ -73,9 +73,17 @@ final class MessageBuilder
         $text .= "\n\nIltimos, belgilangan vaqtda tayyor bo‘ling!";
 
         $buttons = [];
-        $mapUrl = self::mapUrl($event);
-        if ($mapUrl !== null) {
-            $buttons[] = [['text' => '🗺 Xaritada ochish', 'url' => $mapUrl]];
+        $venueUrl = self::mapUrl($event);
+        $homeUrl = self::homeMapUrl($event);
+        $mapRow = [];
+        if ($venueUrl !== null) {
+            $mapRow[] = ['text' => $homeUrl !== null ? '🗺 To‘yxona' : '🗺 Xaritada ochish', 'url' => $venueUrl];
+        }
+        if ($homeUrl !== null) {
+            $mapRow[] = ['text' => '🏠 Uy', 'url' => $homeUrl];
+        }
+        if ($mapRow !== []) {
+            $buttons[] = $mapRow;
         }
         $appUrl = $this->appUrl('e' . (int) $event['id']);
         if ($appUrl !== null) {
@@ -131,6 +139,24 @@ final class MessageBuilder
                 trim((string) ($event['venue_address'] ?? '')),
                 trim((string) ($event['district'] ?? '')),
             ], static fn (string $s): bool => $s !== ''));
+            if ($query === '') {
+                return null;
+            }
+        }
+        return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($query);
+    }
+
+    /**
+     * To'y egasining uyi: xaritadagi nuqta yoki manzil matni.
+     *
+     * @param array<string, mixed> $event
+     */
+    public static function homeMapUrl(array $event): ?string
+    {
+        if (($event['home_latitude'] ?? null) !== null && ($event['home_longitude'] ?? null) !== null) {
+            $query = number_format((float) $event['home_latitude'], 6, '.', '') . ',' . number_format((float) $event['home_longitude'], 6, '.', '');
+        } else {
+            $query = trim((string) ($event['home_address'] ?? ''));
             if ($query === '') {
                 return null;
             }

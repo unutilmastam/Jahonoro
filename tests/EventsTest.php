@@ -208,3 +208,40 @@ test('Settings: o\'qish va yangilash, chegaralar', function (): void {
     assert_same(true, $s['finance_visible_to_members']);
 });
 
+
+test('Events v2: nahor/abet/kech — asosiy vaqt eng birinchisi, kamida bittasi shart', function (): void {
+    fresh_db();
+    $owner = login_owner();
+    $base = ['title' => 'Kelin to‘yi', 'event_type' => 'kelin', 'event_date' => '2030-05-10'];
+    $res = api('POST', '/events', $base, $owner);
+    assert_same(422, $res->status);
+    assert_true(isset($res->payload['error']['details']['times']), $res->body());
+
+    $res = api('POST', '/events', $base + ['assembly_time' => '05:30', 'nahor_time' => '06:00', 'evening_time' => '19:00'], $owner);
+    assert_same(201, $res->status, $res->body());
+    $e = $res->payload['data'];
+    assert_same('06:00', $e['start_time']);
+    assert_same('2030-05-10 06:00:00', $e['starts_at']);
+    assert_same('19:00', $e['evening_time']);
+    assert_same('05:30', $e['assembly_time']);
+});
+
+test('Events v2: to‘yxona va uy — xaritadagi nuqtalar, uy manzili a‘zoga ham ko‘rinadi', function (): void {
+    $bot = fresh_db();
+    $owner = login_owner();
+    $member = login_member($bot);
+    $res = api('POST', '/events', event_payload([
+        'venue_name' => 'Sohil', 'latitude' => '38.2742', 'longitude' => '67.8981',
+        'home_address' => 'Bog‘ishamol 5', 'home_latitude' => '38.2801', 'home_longitude' => '67.9012',
+    ]), $owner);
+    assert_same(201, $res->status, $res->body());
+    $id = $res->payload['data']['id'];
+    $m = api('GET', "/events/{$id}", null, $member)->payload['data'];
+    assert_same(true, $m['location_verified'], 'Xaritada qo‘yilgan nuqta tasdiqlangan');
+    assert_same(38.2742, $m['latitude']);
+    assert_same('Bog‘ishamol 5', $m['home_address']);
+    assert_same(38.2801, $m['home_latitude']);
+
+    $res = api('POST', '/events', event_payload(['home_latitude' => '38.2']), $owner);
+    assert_same(422, $res->status);
+});

@@ -16,7 +16,8 @@ Stek: PHP 8.2 + MySQL/MariaDB + vanilla JS (build bosqichisiz), cPanel shared ho
 | Eslatma takrori | `dedupe_key` = tur + tadbir + boshlanish vaqti. Vaqt o'zgarsa yangi eslatma, eskisi bekor |
 | MVP hajmi | To'ylar, kalendar, to'lovlar, eslatmalar, sozlamalar, a'zolar. Checklist, davomat, CSV — 2-versiya |
 | Deploy | GitHub (private) → cPanel Git Version Control → "Update from Remote" |
-| Xarita | Google Maps + Yandex, koordinata tasdiqlanmagan bo'lsa manzil matni bilan qidiruv |
+| Xarita | Owner nuqtani ilova ichidagi xaritadan o'zi qo'yadi (Leaflet repoda + CARTO/OSM plitkalari). Ochish — Google Maps / Yandex. Nuqta yo'q bo'lsa nomi/manzili bilan qidiruv |
+| Joylar va vaqtlar | 2 joy: to'yxona va to'y egasining uyi. Vaqtlar: Manzilda bo'lish, Nahor, Abet, Kech; asosiy vaqt = eng birinchi tadbir |
 | Vaqt zonasi | Asia/Tashkent (yozgi vaqt yo'q) |
 
 ## 2. Guruhdan ochish va kirishni cheklash
@@ -67,14 +68,15 @@ jahonoro/
 │   ├── api/index.php          ← yagona API kirish nuqtasi
 │   └── assets/
 │       ├── css/   tokens.css · base.css · components.css · pages.css
-│       ├── fonts/ BodoniModa-*.woff2 · Onest-*.woff2
+│       ├── fonts/ Unbounded-*.woff2 · Manrope-*.woff2
+│       ├── vendor/leaflet/  leaflet.js · leaflet.css (BSD-2)
 │       ├── img/   logo.svg · girih.svg
 │       └── js/
 │           ├── app.js · router.js · api.js · auth.js · store.js · tg.js
 │           ├── ui/     icons.js · components.js · sheet.js · toast.js · skeleton.js · ticket.js
 │           ├── pages/  dashboard.js · calendar.js · events.js · event-detail.js
 │           │           event-form.js · settings.js · fallback.js
-│           └── lib/    date-uz.js · money.js · maps.js · escape.js
+│           └── lib/    date-uz.js · money.js · maps.js · map.js · escape.js
 ├── src/
 │   ├── bootstrap.php
 │   ├── Core/          Db · Router · Request · Response · Validator · Logger · RateLimiter
@@ -84,7 +86,7 @@ jahonoro/
 │   ├── Services/      EventService · FinanceGuard · ConflictChecker · ReminderScheduler
 │   └── Controllers/   Auth · Event · Payment · Calendar · Dashboard · Settings · Member · Reminder · Group · Health
 ├── cron/reminders.php
-├── database/migrations/   001_init.sql · 002_settings_seed.sql
+├── database/migrations/   001_init.sql · 002_settings_seed.sql · 003_times_places.sql
 ├── config/config.example.php  ← config.php faqat serverda, .gitignore'da
 ├── storage/logs/.gitkeep
 ├── tests/                 ← PHP CLI testlar
@@ -125,16 +127,18 @@ InnoDB, `utf8mb4_unicode_ci`, pul `DECIMAL(14,2)` (so'm), vaqtlar Asia/Tashkent 
 | --- | --- | --- |
 | `users` | telegram_user_id BIGINT, display_name, role ENUM(owner, member), status ENUM(pending, active, disabled), member_checked_at, member_ok | UNIQUE(telegram_user_id) |
 | `sessions` | user_id, token_hash CHAR(64), expires_at, created_at, ip | UNIQUE(token_hash), INDEX(expires_at), FK users |
-| `events` | title, event_type ENUM(kelin, nikoh, sunnat, beshik, fotiha, korporativ, boshqa), event_date, start_time, starts_at DATETIME, nahor_time, abet_time, assembly_time, departure_time, soundcheck_time, duration_min, venue_name, venue_address, district, latitude DECIMAL(9,6), longitude DECIMAL(9,6), location_verified, total_price NULL, financial_visibility ENUM(inherit, private, members), client_name, client_phone, performance_notes, equipment_notes, dress_code, schedule_notes, internal_notes, status ENUM(planned, confirmed, completed, cancelled, archived), created_by, created_at, updated_at, cancelled_at | INDEX(starts_at), INDEX(status, starts_at), FK users |
+| `events` | title, event_type ENUM(kelin, nikoh, sunnat, beshik, fotiha, korporativ, boshqa), event_date, start_time (= eng birinchi tadbir, server hisoblaydi), starts_at DATETIME, assembly_time (Manzilda bo'lish), nahor_time, abet_time, evening_time (Kech), departure_time*, soundcheck_time*, duration_min, venue_name (to'yxona), venue_address*, district*, latitude/longitude DECIMAL(9,6) (to'yxona nuqtasi), location_verified, home_address, home_latitude/home_longitude (uy nuqtasi), total_price NULL, financial_visibility ENUM(inherit, private, members), client_name, client_phone, performance_notes, equipment_notes, dress_code, schedule_notes, internal_notes, status ENUM(planned, confirmed, completed, cancelled, archived), created_by, created_at, updated_at, cancelled_at | INDEX(starts_at), INDEX(status, starts_at), FK users |
 | `payments` | event_id, amount (>0), paid_on DATE, note, created_by, created_at | INDEX(event_id), FK events |
 | `event_reminders` | event_id, reminder_type ENUM(day_before, manual), dedupe_key, scheduled_at, status ENUM(pending, sending, sent, failed, cancelled), attempts, locked_at, claim_token, sent_at, tg_message_id, last_error | UNIQUE(dedupe_key), INDEX(status, scheduled_at), FK events |
 | `settings` | setting_key PK, setting_value TEXT, updated_at | — |
 | `audit_logs` | actor_user_id, action, entity_type, entity_id, safe_metadata, created_at | INDEX(entity_type, entity_id), INDEX(created_at) |
 | `rate_limits` | bucket, window_start, hits | PK(bucket, window_start) |
 
-- `starts_at` = event_date + start_time, serverda hisoblanadi.
+- `start_time` = nahor/abet/kechning eng birinchisi; `starts_at` = event_date + start_time — serverda hisoblanadi. Kamida bittasi shart.
+- `*` — 1-versiyadan qolgan ustunlar, formada yo'q (eski ma'lumot saqlanadi).
+- `003_times_places.sql` — 2-versiya migratsiyasi (evening_time, home_*).
 - Qoldiq saqlanmaydi: `total_price − SUM(payments.amount)` har safar serverda.
-- `location_verified = 0` → xarita manzil matni bilan qidiradi, "tasdiqlanmagan" belgisi.
+- Nuqtani owner xaritada o'zi qo'yadi → `location_verified = 1`. Nuqta yo'q → xarita nomi/manzili bilan qidiradi, "xaritada belgilanmagan" belgisi.
 - Seed: `finance_visible_to_members=0`, `reminder_hours_before=24`, `timezone=Asia/Tashkent`, `cron_last_run`. Ilova yozadi: `group_chat_id`, `group_title`, `group_link_code/expires`, `tg_update_offset`, `bot_username`, `group_button_message_id`.
 - Owner birinchi kirishda avtomatik yoziladi.
 

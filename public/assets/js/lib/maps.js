@@ -31,6 +31,29 @@ export function yandexMapsUrl(event) {
   return `https://yandex.uz/maps/?text=${encodeURIComponent(addressQuery(event))}`;
 }
 
+export function hasHome(event) {
+  const point = event.home_latitude !== null && event.home_latitude !== undefined
+    && event.home_longitude !== null && event.home_longitude !== undefined;
+  return point || String(event.home_address ?? '').trim() !== '';
+}
+
+export function hasHomePoint(event) {
+  return event.home_latitude !== null && event.home_latitude !== undefined
+    && event.home_longitude !== null && event.home_longitude !== undefined;
+}
+
+export function homeMapsUrl(event) {
+  const q = hasHomePoint(event) ? `${event.home_latitude},${event.home_longitude}` : String(event.home_address ?? '').trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+}
+
+export function homeYandexUrl(event) {
+  if (hasHomePoint(event)) {
+    return `https://yandex.uz/maps/?pt=${encodeURIComponent(`${event.home_longitude},${event.home_latitude}`)}&z=17&l=map`;
+  }
+  return `https://yandex.uz/maps/?text=${encodeURIComponent(String(event.home_address ?? '').trim())}`;
+}
+
 /** "41.311081, 69.240562" yoki Google Maps havolasidan koordinata ajratish. */
 export function parseCoordinates(text) {
   const s = String(text ?? '');

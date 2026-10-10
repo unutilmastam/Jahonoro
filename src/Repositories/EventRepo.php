@@ -15,14 +15,14 @@ final class EventRepo
 
     /** Bazaga yoziladigan ustunlar (EventService tayyorlaydi). */
     public const WRITABLE = [
-        'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'nahor_time', 'abet_time',
+        'title', 'event_type', 'event_date', 'start_time', 'starts_at', 'nahor_time', 'abet_time', 'evening_time',
         'assembly_time', 'departure_time', 'soundcheck_time', 'duration_min', 'venue_name', 'venue_address',
-        'district', 'latitude', 'longitude', 'location_verified', 'total_price', 'financial_visibility',
+        'district', 'home_address', 'home_latitude', 'home_longitude', 'latitude', 'longitude', 'location_verified', 'total_price', 'financial_visibility',
         'client_name', 'client_phone', 'performance_notes', 'equipment_notes', 'dress_code', 'schedule_notes',
         'internal_notes', 'status',
     ];
 
-    private const ROW_COLUMNS = 'id, title, event_type, event_date, start_time, starts_at, duration_min, venue_name, venue_address, district, status, financial_visibility, total_price';
+    private const ROW_COLUMNS = 'id, title, event_type, event_date, start_time, starts_at, nahor_time, abet_time, evening_time, assembly_time, duration_min, venue_name, venue_address, district, home_address, status, financial_visibility, total_price';
 
     public function __construct(private readonly PDO $pdo)
     {
@@ -109,7 +109,7 @@ final class EventRepo
         if (!empty($f['q'])) {
             $like = '%' . addcslashes((string) $f['q'], '%_\\') . '%';
             // Mijoz ismi va telefoni bo'yicha qidiruv faqat owner uchun (a'zoga sizib chiqmasin)
-            $fields = ['title', 'venue_name', 'venue_address', 'district'];
+            $fields = ['title', 'venue_name', 'venue_address', 'district', 'home_address'];
             if ($isOwner) {
                 $fields[] = 'client_name';
                 $fields[] = 'client_phone';

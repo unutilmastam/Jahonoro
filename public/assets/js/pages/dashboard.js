@@ -2,7 +2,7 @@
 
 import * as api from '../api.js';
 import { session } from '../store.js';
-import { h, clear, append, eventRow, dayHeader, listBlock, row, avatar, errorState, plainName } from '../ui/components.js';
+import { h, clear, append, eventRow, dayHeader, listBlock, row, avatar, errorState, plainName, logo } from '../ui/components.js';
 import { ticket, ticketEmpty } from '../ui/ticket.js';
 import { ticketSkeleton, rowsSkeleton, delayedSkeleton } from '../ui/skeleton.js';
 import { greeting, todayISO, dayLabel, timeAgo, formatDayMonth } from '../lib/date-uz.js';
@@ -23,9 +23,11 @@ function header(user) {
   const name = firstName(user?.name);
   return h('header', { class: 'home-head' },
     h('div', { class: 'home-head__top' },
-      h('span', { class: 'logo' }, 'JAHONORO'),
+      logo(),
       avatar(user?.name)),
-    h('p', { class: 'home-head__greet' }, name ? `${greeting()}, ${name}` : greeting()));
+    h('h1', { class: 'home-head__greet' },
+      h('span', null, `${greeting()},`),
+      name || 'xush kelibsiz'));
 }
 
 function stats(counts) {

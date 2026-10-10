@@ -1,17 +1,19 @@
-// "Keyingi to'y" chiptasi (6.1) — ilovadagi yagona yorqin element.
+// "Keyingi to'y" — firuza afisha (DESIGN 6.1), ilovadagi yagona yorqin element.
 
-import { h, button, typeChip } from './components.js';
+import { h, button, placeLine, TYPE_LABELS } from './components.js';
 import { icon } from './icons.js';
 import { parts, MONTHS, WEEKDAYS, weekdayIndex, todayISO, formatTime, countdown } from '../lib/date-uz.js';
-import { googleMapsUrl, hasLocation } from '../lib/maps.js';
+import { googleMapsUrl, hasLocation, homeMapsUrl, hasHome } from '../lib/maps.js';
 import { openLink } from '../tg.js';
 import { once } from '../store.js';
 
-function timeCell(label, value) {
-  return h('div', { class: 'ticket__cell' },
-    h('span', { class: 'ticket__label' }, label),
-    h('span', { class: 'ticket__time num' }, formatTime(value)));
-}
+/** Kun tartibidagi vaqtlar: Manzilda bo'lish, Nahor, Abet, Kech (bo'sh bo'lsa tushib qoladi). */
+export const TIME_SLOTS = [
+  { key: 'assembly_time', label: 'Manzilda', full: 'Manzilda bo‘lish', iconName: 'flag' },
+  { key: 'nahor_time', label: 'Nahor', full: 'Nahor', iconName: 'sunrise' },
+  { key: 'abet_time', label: 'Abet', full: 'Abet', iconName: 'sun' },
+  { key: 'evening_time', label: 'Kech', full: 'Kech', iconName: 'moon' },
+];
 
 /**
  * @param {object} ev — FinanceGuard::present() natijasi
@@ -19,51 +21,49 @@ function timeCell(label, value) {
 export function ticket(ev) {
   const today = todayISO();
   const { y, m, d } = parts(ev.event_date);
-  const dateLine = `${MONTHS[m - 1]}${y !== parts(today).y ? ` ${y}` : ''}, ${WEEKDAYS[weekdayIndex(ev.event_date)]}`;
-  const address = [ev.district, ev.venue_address].filter(Boolean).join(', ');
-
-  const second = ev.assembly_time
-    ? timeCell('Yig‘ilish', ev.assembly_time)
-    : (ev.departure_time ? timeCell('Jo‘nash', ev.departure_time) : null);
-
   const cd = countdown(ev.starts_at);
-  const countdownEl = h('span', { class: `ticket__countdown${cd.today ? ' is-today' : ''}` },
-    cd.today ? h('span', { class: 'ticket__dot', 'aria-hidden': 'true' }) : null,
-    cd.text);
-
   const intro = !once.has('ticket-intro');
   once.mark('ticket-intro');
 
-  const el = h('article', { class: `ticket theme-night${intro ? ' ticket--intro' : ''}` },
-    h('a', { class: 'ticket__link', href: `#/events/${ev.id}`, 'aria-label': `Keyingi to‘y: ${ev.title}` }),
-    h('div', { class: 'ticket__main' },
-      h('div', { class: 'ticket__top' },
-        h('span', { class: 'ticket__day num' }, String(d)),
-        typeChip(ev.event_type)),
-      h('p', { class: 'ticket__date' }, dateLine),
-      h('div', { class: 'ticket__venue' },
-        h('p', { class: 'ticket__venue-name' }, ev.venue_name || ev.title),
-        address ? h('p', { class: 'ticket__venue-addr' }, address) : null)),
-    h('div', { class: 'ticket__perf', 'aria-hidden': 'true' }, h('span', { class: 'ticket__perf-line' })),
-    h('div', { class: 'ticket__stub' },
-      h('div', { class: 'ticket__times' }, timeCell('Boshlanish', ev.start_time), second),
-      h('div', { class: 'ticket__foot' },
-        countdownEl,
-        hasLocation(ev)
-          ? button('Xarita', {
-            variant: 'secondary',
-            size: 'sm',
-            iconName: 'map-pin',
-            onClick: (e) => { e.preventDefault(); e.stopPropagation(); openLink(googleMapsUrl(ev)); },
-          })
-          : null)));
+  // Soat tartibida; "Manzilda bo'lish" teskari rangda ajralib turadi
+  const slots = TIME_SLOTS.filter((s) => ev[s.key])
+    .sort((a, b) => String(ev[a.key]).localeCompare(String(ev[b.key])));
+  const times = slots.map((s) => h('div', { class: `hero__time${s.key === 'assembly_time' ? ' is-arrival' : ''}` },
+    h('span', { class: 'hero__time-label' }, s.label),
+    h('span', { class: 'hero__time-value num' }, formatTime(ev[s.key]))));
 
-  return el;
+  const place = placeLine(ev);
+  const mapUrl = hasLocation(ev) ? googleMapsUrl(ev) : (hasHome(ev) ? homeMapsUrl(ev) : null);
+
+  return h('article', { class: `hero${intro ? ' hero--intro' : ''}${cd.today ? ' hero--today' : ''}` },
+    h('a', { class: 'hero__link', href: `#/events/${ev.id}`, 'aria-label': `Keyingi to‘y: ${ev.title}` }),
+    h('div', { class: 'hero__top' },
+      h('span', { class: 'hero__kicker' },
+        h('span', { class: 'chip__dot', 'aria-hidden': 'true' }),
+        TYPE_LABELS[ev.event_type] ?? TYPE_LABELS.boshqa),
+      h('span', { class: 'hero__countdown' }, cd.text)),
+    h('div', { class: 'hero__date' },
+      h('span', { class: 'hero__day num' }, String(d)),
+      h('span', { class: 'hero__month' },
+        h('span', null, `${MONTHS[m - 1]}${y !== parts(today).y ? ` ${y}` : ''}`),
+        h('span', null, WEEKDAYS[weekdayIndex(ev.event_date)]))),
+    h('p', { class: 'hero__title' }, ev.title),
+    times.length ? h('div', { class: 'hero__times' }, times) : null,
+    h('div', { class: 'hero__foot' },
+      place ? h('span', { class: 'hero__place' }, icon('map-pin', { size: 18 }), h('span', null, place)) : h('span'),
+      mapUrl
+        ? Object.assign(button('Xarita', {
+          variant: 'secondary',
+          size: 'sm',
+          iconName: 'navigation',
+          onClick: (e) => { e.preventDefault(); e.stopPropagation(); openLink(mapUrl); },
+        }), { className: 'btn btn--sm hero__btn' })
+        : null));
 }
 
 export function ticketEmpty(isOwner, navigate) {
   return h('div', { class: 'empty empty--ticket' },
-    icon('calendar', { size: 32, className: 'empty__icon' }),
+    icon('calendar', { size: 28, className: 'empty__icon' }),
     h('p', { class: 'empty__title' }, 'Kelgusi to‘ylar yo‘q'),
     h('p', { class: 'empty__text' }, 'Yangi buyurtma kelganda shu yerda ko‘rinadi.'),
     isOwner ? button('To‘y qo‘shish', { variant: 'primary', iconName: 'plus', onClick: () => navigate('/events/new') }) : null);

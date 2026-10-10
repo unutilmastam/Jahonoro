@@ -135,6 +135,15 @@ GitHub'da `main` ga push → cPanel → **Git Version Control** → **Manage** �
 
 Agar yangi `database/migrations/00X_*.sql` fayl qo'shilgan bo'lsa, uni phpMyAdmin'da qo'lda import qiling.
 
+ZIP orqali yangilash: arxivni `/home/USER` ga yuklab, **Extract** qiling — fayllar ustiga yoziladi, `config/config.php` tegilmaydi.
+
+### 2-versiya (vaqtlar, 2 joy, xarita, yangi dizayn)
+
+1. Fayllarni yangilang (Git yoki ZIP).
+2. phpMyAdmin → `itcode_jahonoro` → **Import** → `003_times_places.sql` (bir marta).
+3. Ilovani yopib qayta oching.
+4. BotFather'da yangi rasmlar: `docs/brand/jahonoro-avatar-512.png` (bot rasmi: Edit Info → Photo) va `docs/brand/jahonoro-cover-640x360.png` (Mini App → jadval → Edit → Photo).
+
 ## Xavfsizlik eslatmalari
 
 - Bot token va DB parol faqat `config/config.php` da. Token oshkor bo'lsa: @BotFather → `/revoke` → yangi token'ni config'ga yozing.

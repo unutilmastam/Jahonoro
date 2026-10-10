@@ -7,17 +7,6 @@ function token(name, scope = document.documentElement) {
   return getComputedStyle(scope).getPropertyValue(name).trim();
 }
 
-/** Sarlavha rangi har doim tungi --bg (DESIGN 9). */
-function nightBg() {
-  const probe = document.createElement('div');
-  probe.className = 'theme-night';
-  probe.hidden = true;
-  document.body.appendChild(probe);
-  const value = token('--bg', probe);
-  probe.remove();
-  return value;
-}
-
 function supports(version) {
   const app = wa();
   return Boolean(app && typeof app.isVersionAtLeast === 'function' && app.isVersionAtLeast(version));
@@ -46,7 +35,7 @@ export function applyTheme() {
   if (!app) return scheme;
   try {
     if (supports('6.1')) {
-      app.setHeaderColor(nightBg());
+      app.setHeaderColor(token('--bg'));
       app.setBackgroundColor(token('--bg'));
     }
     if (supports('7.10') && typeof app.setBottomBarColor === 'function') {
@@ -136,7 +125,7 @@ export function showMainButton(text, handler) {
   const mb = app.MainButton;
   if (mainHandler) mb.offClick(mainHandler);
   mainHandler = handler;
-  mb.setParams({ text, color: token('--gold'), text_color: token('--gold-ink'), is_active: true, is_visible: true });
+  mb.setParams({ text, color: token('--accent'), text_color: token('--accent-ink'), is_active: true, is_visible: true });
   mb.onClick(mainHandler);
   mb.show();
   return true;
