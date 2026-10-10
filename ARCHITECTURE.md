@@ -9,7 +9,8 @@ Stek: PHP 8.2 + MySQL/MariaDB + vanilla JS (build bosqichisiz), cPanel shared ho
 | Masala | Qaror |
 | --- | --- |
 | Guruhdan ochish | Telegram guruhda `web_app` inline tugmani qo'llamaydi. BotFather Direct Link (`https://t.me/<bot>/jadval`) URL tugma sifatida yuboriladi va pin qilinadi |
-| Kimga ruxsat | Owner = config'dagi Telegram ID. A'zo = `users` jadvalida faol + `getChatMember` bilan guruh a'zosi |
+| Kimga ruxsat | Owner = config'dagi Telegram ID. A'zo = `users` jadvalida faol + `getChatMember` bilan **ulangan guruh** a'zosi |
+| Guruhni ulash | Owner ilovadan: `t.me/<bot>?startgroup=<bir martalik kod>&admin=pin_messages` → guruh tanlanadi → `getUpdates` (webhooksiz) orqali `/start <kod>` yoki bot qo'shilgani topiladi → `settings.group_chat_id`. Begonalar qo'shsa bot chiqib ketadi |
 | Sessiya | Bearer token (frontendda faqat xotirada, DB'da SHA-256 hash). Cookie va CSRF yo'q |
 | Moliya ko'rinishi | Tadbirda `inherit / private / members`. `inherit` → global sozlama. Global default = private |
 | Eslatma takrori | `dedupe_key` = tur + tadbir + boshlanish vaqti. Vaqt o'zgarsa yangi eslatma, eskisi bekor |
@@ -22,9 +23,9 @@ Stek: PHP 8.2 + MySQL/MariaDB + vanilla JS (build bosqichisiz), cPanel shared ho
 
 Bot baribir kerak (Mini App botga tegishli, eslatmalarni bot yuboradi), lekin a'zolar botga yozmaydi.
 
-1. BotFather: `/newbot` → masalan `@JahonoroBot`. `/newapp` → short name `jadval`, URL = hosting manzili.
-2. Bot guruhga qo'shiladi, admin qilinadi (faqat "xabarlarni pin qilish").
-3. Ilova → Sozlamalar → "Guruhga tugma yuborish" (owner). Bot "📅 TOʻYLAR JADVALI" URL tugmali xabar yuboradi va pin qiladi.
+1. BotFather: `/newbot` → masalan `@JahonoroBot`. `/newapp` → short name `jadval`, URL = `https://jahonoro.itcode.uz`.
+2. Owner ilovani ochadi → Sozlamalar → **Guruhni ulash** → Telegram guruh tanlash oynasi → yopiq JAHONORO guruhi tanlanadi, bot admin bo'lib qo'shiladi (faqat "xabarlarni pin qilish"). Kod bir martalik, 30 daqiqa amal qiladi, faqat owner qo'shgani qabul qilinadi.
+3. Ulanish bilan bot guruhga "📅 TOʻYLAR JADVALI" URL tugmali xabar yuboradi va pin qiladi (keyin Sozlamalardan qayta yuborish mumkin).
 4. A'zo tugmani bosadi → Mini App Telegram ichida ochiladi.
 
 Havolani boshqa joyga tashlash mumkin, shuning uchun himoya serverda:
@@ -36,7 +37,7 @@ Havolani boshqa joyga tashlash mumkin, shuning uchun himoya serverda:
 - Guruh a'zosi birinchi marta ochsa `status=pending` bo'lib yoziladi, owner tasdiqlaydi.
 - Telegram tashqarisida — "Faqat Telegram orqali" sahifasi.
 
-Guruh ID'sini olish: bot qo'shilgach guruhga xabar yozing, brauzerda `https://api.telegram.org/bot<TOKEN>/getUpdates` → `chat.id` (`-100...`). Webhook ishlatilmaydi.
+Guruh ID'si qo'lda olinmaydi — ulash oqimi uni o'zi saqlaydi (`config.php` dagi `GROUP_CHAT_ID` faqat zaxira). Webhook ishlatilmaydi: yangilanishlar `getUpdates` bilan ulash paytida va har cron'da o'qiladi (guruh supergroup'ga aylansa yangi ID ham shu yo'l bilan saqlanadi). Guruh almashsa, hamma a'zolarning a'zolik keshi tozalanadi.
 
 ## 3. Umumiy sxema
 
@@ -107,6 +108,8 @@ jahonoro/
 | `POST /events/{id}/remind-now` | owner | qo'lda eslatma |
 | `GET` · `PUT /settings` | owner | moliya ko'rinishi, eslatma soati |
 | `GET` · `POST` · `PUT /members` | owner | a'zolar, tasdiqlash |
+| `GET /group` | owner | ulangan guruh holati |
+| `POST /group/link` · `/group/link/check` | owner | guruh ulash havolasi · ulanishni tekshirish |
 | `POST /group/publish-button` | owner | guruhga tugma + pin |
 | `GET /reminders/status` | owner | eslatmalar holati |
 | `GET /health` | owner | PHP, DB, Telegram, cron oxirgi vaqti |
@@ -132,7 +135,7 @@ InnoDB, `utf8mb4_unicode_ci`, pul `DECIMAL(14,2)` (so'm), vaqtlar Asia/Tashkent 
 - `starts_at` = event_date + start_time, serverda hisoblanadi.
 - Qoldiq saqlanmaydi: `total_price − SUM(payments.amount)` har safar serverda.
 - `location_verified = 0` → xarita manzil matni bilan qidiradi, "tasdiqlanmagan" belgisi.
-- Seed: `finance_visible_to_members=0`, `reminder_hours_before=24`, `timezone=Asia/Tashkent`, `cron_last_run`.
+- Seed: `finance_visible_to_members=0`, `reminder_hours_before=24`, `timezone=Asia/Tashkent`, `cron_last_run`. Ilova yozadi: `group_chat_id`, `group_title`, `group_link_code/expires`, `tg_update_offset`, `bot_username`, `group_button_message_id`.
 - Owner birinchi kirishda avtomatik yoziladi.
 
 ## 6. Xavfsizlik va moliya maxfiyligi
@@ -285,20 +288,21 @@ O'rnatish:
 1. [ ] GitHub'da private `jahonoro` repo.
 2. [ ] cPanel → SSH Access → kalit yaratish (nom `id_rsa`) → public kalit GitHub → repo Settings → Deploy keys (faqat o'qish).
 3. [ ] cPanel → Git Version Control → Create: `git@github.com:unutilmastam/jahonoro.git`, yo'l `/home/USER/jahonoro`.
-4. [ ] Subdomen (masalan `jahonoro.itcode.uz`), docroot `jahonoro/public`, AutoSSL.
+4. [ ] Subdomen `jahonoro.itcode.uz`, docroot `jahonoro/public`, AutoSSL.
 5. [ ] MySQL Databases: baza + foydalanuvchi + ALL PRIVILEGES; phpMyAdmin'da `001`, `002` import.
 6. [ ] File Manager: `config.example.php` → `config.php`, to'ldirish, ruxsat 600.
 7. [ ] BotFather: `/newbot`, `/newapp` (short name `jadval`, URL = subdomen) → `MINI_APP_LINK`.
-8. [ ] Bot guruhga, admin (pin huquqi), `getUpdates` → `GROUP_CHAT_ID`.
+8. [ ] (guruh 10-qadamda ilovadan ulanadi)
 9. [ ] Cron har 5 daqiqa.
-10. [ ] Ilovani ochib owner bo'lib kirish → Sozlamalar → "Guruhga tugma yuborish".
+10. [ ] Ilovani ochib owner bo'lib kirish → Sozlamalar → "Guruhni ulash" → guruhni tanlash.
 11. [ ] Ertangi sanaga test to'y → 5 daqiqada eslatma → test to'yni o'chirish.
 12. [ ] Bitta a'zo bilan sinov: narx yo'q, tahrir yo'q.
 
 Yangilash: push → cPanel → Git Version Control → Manage → Update from Remote. Yangi `database/migrations/00X_*.sql` bo'lsa — phpMyAdmin'da qo'lda.
 
-## 10. Ochiq savollar
+## 10. Hal qilingan savollar
 
-- Subdomen: `jahonoro.itcode.uz` yoki alohida domen?
-- Bot username (`@JahonoroBot` band bo'lishi mumkin).
-- Eslatma: 24 soat oldin yoki oldingi kuni aniq soatda (masalan 20:00)?
+- Subdomen: `jahonoro.itcode.uz`.
+- Eslatma: boshlanishdan 24 soat oldin (Sozlamalardan o'zgartirish mumkin).
+- Guruh: ilovaning o'zidan ulanadi; ilova faqat shu guruh a'zolariga ochiladi.
+- Bot username: BotFather'da yaratilganda aniqlanadi, kodga yozilmaydi (`getMe` dan olinadi).

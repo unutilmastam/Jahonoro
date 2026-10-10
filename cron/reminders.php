@@ -33,6 +33,12 @@ if (!flock($lock, LOCK_EX | LOCK_NB)) {
 
 $exit = 0;
 try {
+    // Guruh ulash, begona guruhlardan chiqish, guruh ID o'zgarishi
+    try {
+        Services::groupLinker()->processUpdates();
+    } catch (Throwable $e) {
+        Logger::warning('cron_updates_failed', ['type' => get_class($e)]);
+    }
     $stats = Services::reminders()->processDue();
     Services::sessions()->purgeExpired();
     Services::settings()->set('cron_last_run', date('Y-m-d H:i:s'));

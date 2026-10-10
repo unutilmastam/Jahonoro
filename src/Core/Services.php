@@ -16,6 +16,7 @@ use App\Repositories\UserRepo;
 use App\Services\ConflictChecker;
 use App\Services\EventService;
 use App\Services\FinanceGuard;
+use App\Services\GroupLinker;
 use App\Services\ReminderScheduler;
 use App\Telegram\MessageBuilder;
 use App\Telegram\BotApi;
@@ -80,7 +81,7 @@ final class Services
         return self::get('membership', static fn (): MembershipService => new MembershipService(
             self::bot(),
             self::users(),
-            (string) config('GROUP_CHAT_ID', '')
+            self::groupChatId()
         ));
     }
 
@@ -144,7 +145,24 @@ final class Services
             self::settings(),
             self::bot(),
             self::messages(),
-            (string) config('GROUP_CHAT_ID', '')
+            self::groupChatId()
+        ));
+    }
+
+    /** Ulangan guruh (settings → config zaxira). */
+    public static function groupChatId(): string
+    {
+        return self::settings()->groupChatId();
+    }
+
+    public static function groupLinker(): GroupLinker
+    {
+        return self::get('groupLinker', static fn (): GroupLinker => new GroupLinker(
+            self::bot(),
+            self::settings(),
+            self::users(),
+            self::audit(),
+            self::messages(),
         ));
     }
 }

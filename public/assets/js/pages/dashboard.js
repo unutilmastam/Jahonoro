@@ -78,6 +78,17 @@ function pendingBlock(count, navigate) {
     }));
 }
 
+function groupNotice(linked, navigate) {
+  if (linked !== false) return null;
+  return h('div', { class: 'block notice-block' },
+    row('Guruh hali ulanmagan', null, {
+      iconName: 'users',
+      sub: 'A’zolar kirishi va eslatmalar uchun guruhni ulang',
+      trailing: h('span', { class: 'badge-dot', 'aria-hidden': 'true' }),
+      onClick: () => navigate('/settings'),
+    }));
+}
+
 function recentBlock(items) {
   if (!items || items.length === 0) return null;
   const rows = items.map((it) => row(it.title || 'To‘y', null, {
@@ -95,6 +106,7 @@ function draw(root, data, ctx) {
     header(user),
     h('div', { class: 'home-ticket' }, data.next ? ticket(data.next) : ticketEmpty(isOwner, ctx.navigate)),
     stats(data.counts),
+    isOwner ? groupNotice(data.group_linked, ctx.navigate) : null,
     isOwner ? pendingBlock(data.pending_members, ctx.navigate) : null,
     weekList(data.week ?? [], today, data.next?.id),
     isOwner ? debtBlock(data.debt, ctx.navigate) : null,

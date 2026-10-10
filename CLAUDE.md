@@ -55,3 +55,4 @@ Bu ilova arzon admin panelga o'xshamasligi kerak. `DESIGN.md` dagi g'oya — kon
 - [x] 6 — Aʼzo sahifalari — Bosh sahifa (chipta + intro), Kalendar, Toʻylar (filtr, cheksiz yuklash), Tafsilot (timeline, xarita, moliya)
 - [x] 7 — Owner ekranlari — forma (MainButton, mojaro sheet), avans, bekor/tiklash/arxiv, eslatma, Sozlamalar; 375×667 va 360 da skrinshot bilan tekshirildi
 - [x] 8 — Hujjatlar, sinov, sayqal — docs/DEPLOY.md, docs/TESTING.md, README; DESIGN 12 tekshiruvi (kontrast, 44px, 360px, fokus, reduced-motion, tokenlar, ‘); hostingda sinov kutilmoqda
+- [x] + Guruhni ilovadan ulash — startgroup havola + bir martalik kod, getUpdates (webhooksiz), begona guruhdan chiqish, supergroup migratsiyasi; 78 test

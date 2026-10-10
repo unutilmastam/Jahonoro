@@ -36,6 +36,7 @@ export async function render(ctx) {
   let settings = null;
   let members = null;
   let reminders = null;
+  let group = null;
 
   function financeSection() {
     const sw = switchControl(settings.finance_visible_to_members, async (checked, input) => {
@@ -129,14 +130,100 @@ export async function render(ctx) {
   }
 
   function groupSection() {
+    const g = group ?? { linked: false, title: '', source: 'none' };
+    const rows = [];
+    if (g.linked) {
+      rows.push(row(g.title || 'Guruh', null, {
+        iconName: 'users',
+        sub: g.source === 'config' ? 'config.php orqali ulangan' : 'Ilova faqat shu guruh a’zolariga ochiladi',
+        trailing: h('span', { class: 'chip chip--status s-confirmed' }, 'Ulangan'),
+      }));
+      rows.push(row('Guruhga tugma yuborish', null, { iconName: 'bell', onClick: publishButton }));
+      rows.push(row('Boshqa guruhni ulash', null, { iconName: 'refresh', onClick: openLinkSheet }));
+    }
     return h('section', { class: 'block-group' },
       h('h2', { class: 'block-title' }, 'Guruh'),
-      h('div', { class: 'block' }, row('Guruhga tugma yuborish', null, { iconName: 'users', onClick: publishButton })),
-      h('p', { class: 'block-note' }, 'Bot guruhga “TO‘YLAR JADVALI” tugmali xabar yuboradi va uni pin qiladi.'));
+      g.linked
+        ? h('div', { class: 'block' }, rows)
+        : h('div', { class: 'block group-empty' },
+          h('div', { class: 'group-empty__body' },
+            h('p', { class: 'group-empty__title' }, 'Guruh ulanmagan'),
+            h('p', { class: 'group-empty__text' }, 'Yopiq guruhingizni ulang. Ilova faqat shu guruh a’zolariga ochiladi, eslatmalar shu guruhga boradi.')),
+          h('div', { class: 'group-empty__action' },
+            button('Guruhni ulash', { variant: 'primary', iconName: 'plus', block: true, onClick: openLinkSheet }))),
+      g.linked ? h('p', { class: 'block-note' }, 'Guruhdan chiqqan odam keyingi tekshiruvda (10 daqiqa ichida) ilovaga kira olmaydi.') : null);
+  }
+
+  function openLinkSheet() {
+    let timer = null;
+    let started = false;
+    const statusLine = h('p', { class: 'link-status', 'aria-live': 'polite' });
+    const steps = h('ol', { class: 'link-steps' },
+      h('li', null, 'Pastdagi tugmani bosing — Telegram guruh tanlash oynasini ochadi.'),
+      h('li', null, 'JAHONORO guruhini tanlang va botni admin qilib qo‘shing (faqat “Xabarlarni pin qilish” huquqi kerak).'),
+      h('li', null, 'Shu oynaga qayting — guruh o‘zi ulanadi va guruhga “TO‘YLAR JADVALI” tugmasi yuboriladi.'));
+    const go = button('Telegram’da guruhni tanlash', { variant: 'primary', block: true, iconName: 'users' });
+    const close = button('Yopish', { variant: 'ghost', block: true, onClick: () => sheet.close() });
+
+    const setStatus = (text, waiting) => {
+      clear(statusLine).append(waiting ? h('span', { class: 'spinner', 'aria-hidden': 'true' }) : '', text);
+      statusLine.hidden = !text;
+    };
+    setStatus('', false);
+
+    const poll = async () => {
+      try {
+        const res = await api.post('/group/link/check');
+        if (res.just_linked || (res.linked && res.source === 'app' && !res.pending)) {
+          clearTimeout(timer);
+          timer = null;
+          group = res;
+          tg.haptic.notify('success');
+          sheet.close();
+          toast.success(`“${res.title || 'Guruh'}” ulandi`);
+          draw();
+          return;
+        }
+        if (!res.pending) {
+          setStatus('Kod muddati tugadi. Tugmani qayta bosing.', false);
+          started = false;
+          return;
+        }
+      } catch (e) {
+        setStatus(e.message, false);
+        if (e.code === 'webhook_set') return;
+      }
+      timer = setTimeout(poll, 3000);
+    };
+
+    go.addEventListener('click', async () => {
+      setLoading(go, true);
+      try {
+        const link = await api.post('/group/link');
+        tg.openTelegramLink(link.url);
+        setStatus('Guruh tanlanishi kutilmoqda…', true);
+        if (!started) {
+          started = true;
+          clearTimeout(timer);
+          timer = setTimeout(poll, 3000);
+        }
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setLoading(go, false);
+      }
+    });
+
+    const sheet = openSheet({
+      title: 'Guruhni ulash',
+      content: h('div', null, steps, statusLine),
+      footer: h('div', { class: 'stack-buttons' }, go, close),
+      onClose: () => clearTimeout(timer),
+    });
   }
 
   function draw() {
-    clear(body).append(financeSection(), remindersSection(), membersSection(), groupSection());
+    clear(body).append(groupSection(), financeSection(), remindersSection(), membersSection());
   }
 
   async function drawSystem() {
@@ -158,7 +245,7 @@ export async function render(ctx) {
         }),
         row('Sozlamalar', null, {
           iconName: 'settings',
-          sub: [s.group_configured ? 'guruh ID bor' : 'guruh ID yo‘q', s.mini_app_configured ? 'Mini App havolasi bor' : 'Mini App havolasi yo‘q'].join(' · '),
+          sub: [s.group_configured ? 'guruh ulangan' : 'guruh ulanmagan', s.mini_app_configured ? 'Mini App havolasi bor' : 'Mini App havolasi yo‘q'].join(' · '),
           trailing: h('span', { class: 'row__value' }, `PHP ${s.php_version}`),
         })));
     } catch (e) {
@@ -169,10 +256,11 @@ export async function render(ctx) {
   async function load() {
     const stop = delayedSkeleton(body, () => h('div', null, blockSkeleton(1), blockSkeleton(3), blockSkeleton(3)));
     try {
-      [settings, members, reminders] = await Promise.all([
+      [settings, members, reminders, group] = await Promise.all([
         api.get('/settings'),
         api.get('/members'),
         api.get('/reminders/status').catch(() => null),
+        api.get('/group').catch(() => null),
       ]);
       stop();
       if (ctx.isCurrent()) draw();

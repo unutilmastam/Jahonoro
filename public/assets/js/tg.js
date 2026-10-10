@@ -188,6 +188,16 @@ export function openLink(url) {
   }
 }
 
+/** t.me havolasini Telegram ichida ochadi (guruh tanlash oynasi va h.k.). */
+export function openTelegramLink(url) {
+  const app = wa();
+  if (app && typeof app.openTelegramLink === 'function' && isTelegram()) {
+    app.openTelegramLink(url);
+  } else {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+}
+
 export function close() {
   wa()?.close?.();
 }

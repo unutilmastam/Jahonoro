@@ -105,4 +105,11 @@ final class UserRepo
         $stmt->execute();
         return (int) $stmt->fetchColumn();
     }
+
+    /** Guruh almashganda: hamma a'zolarning a'zolik keshi eskiradi (keyingi so'rovda qayta tekshiriladi). */
+    public function resetMembershipCache(): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET member_checked_at = NULL, member_ok = 0 WHERE role <> 'owner'");
+        $stmt->execute();
+    }
 }

@@ -54,6 +54,7 @@ final class DashboardController
                 'events' => $debt['events'],
             ];
             $data['pending_members'] = Services::users()->countPending();
+            $data['group_linked'] = Services::groupChatId() !== '';
         }
 
         return Response::ok($data);

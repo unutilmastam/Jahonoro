@@ -10,6 +10,15 @@ Kerakli hisoblar: **owner** (siz), **a'zo** (guruhdagi bitta musiqachi), **begon
 2. Kalendar va To‘ylar sahifasida o'ng pastda oltin "+" tugma bor.
 3. Sozlamalar → Tizim holati → "Telegram ulanishi" **Ishlayapti**, "Cron" **Ishlayapti**.
 
+## 1a. Guruhni ulash
+
+1. Guruh ulanmagan holatda owner Bosh sahifasida "Guruh hali ulanmagan" qatori bor; a'zo ilovani ocholmaydi ("kirish huquqi yo‘q").
+2. Sozlamalar → **Guruhni ulash** → **Telegram’da guruhni tanlash** → guruh tanlash oynasi ochiladi.
+3. JAHONORO guruhini tanlab, botni admin qiling → ilovaga qayting → 3–10 soniyada "“…” ulandi", Guruh blokida guruh nomi va yashil "Ulangan".
+4. Guruhda pin qilingan "📅 TO‘YLAR JADVALI" xabari paydo bo'ladi.
+5. Boshqa odam botni o'z guruhiga qo'shsa → keyingi cron'da (5 daqiqa) bot o'sha guruhdan chiqib ketadi, ilova ulanmaydi.
+6. **Boshqa guruhni ulash** bilan ikkinchi guruhni ulang → eski guruhda bo'lib yangi guruhda yo'q a'zo 10 daqiqa ichida kira olmaydi; eslatmalar yangi guruhga boradi.
+
 ## 2. A'zo
 
 1. A'zo guruhdagi pin qilingan tugmani birinchi marta bosadi → "So‘rovingiz yuborildi. Guruh rahbari tasdiqlagach ilova ochiladi."

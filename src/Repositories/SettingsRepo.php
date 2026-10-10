@@ -54,4 +54,18 @@ final class SettingsRepo
         $hours = (int) $this->get('reminder_hours_before', '24');
         return $hours >= 1 && $hours <= 72 ? $hours : 24;
     }
+
+    /**
+     * Ulangan guruh ID'si: ilovadan ulangan (settings) yoki zaxira sifatida config.php.
+     */
+    public function groupChatId(): string
+    {
+        $linked = (string) $this->get('group_chat_id', '');
+        return $linked !== '' ? $linked : (string) config('GROUP_CHAT_ID', '');
+    }
+
+    public function groupTitle(): string
+    {
+        return (string) $this->get('group_title', '');
+    }
 }

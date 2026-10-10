@@ -15,6 +15,7 @@ final class TelegramException extends RuntimeException
         public readonly int $errorCode,
         public readonly string $description,
         public readonly ?int $retryAfter = null,
+        public readonly ?int $migrateToChatId = null,
     ) {
         parent::__construct($description, $errorCode);
     }

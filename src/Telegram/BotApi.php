@@ -61,8 +61,9 @@ class BotApi
             $code = (int) ($data['error_code'] ?? $status);
             $description = substr((string) ($data['description'] ?? 'Noma’lum xato'), 0, 200);
             $retryAfter = isset($data['parameters']['retry_after']) ? (int) $data['parameters']['retry_after'] : null;
+            $migrateTo = isset($data['parameters']['migrate_to_chat_id']) ? (int) $data['parameters']['migrate_to_chat_id'] : null;
             Logger::warning('telegram_api_error', ['method' => $method, 'code' => $code, 'description' => $description]);
-            throw new TelegramException($code, $description, $retryAfter);
+            throw new TelegramException($code, $description, $retryAfter, $migrateTo);
         }
         return $data['result'] ?? null;
     }
@@ -104,5 +105,31 @@ class BotApi
             'message_id' => $messageId,
             'disable_notification' => true,
         ]);
+    }
+
+    /**
+     * Kelgan yangilanishlar (webhook o'rnatilmagan bo'lishi kerak).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function getUpdates(int $offset, int $limit = 100): array
+    {
+        return array_values((array) $this->call('getUpdates', [
+            'offset' => $offset,
+            'limit' => $limit,
+            'timeout' => 0,
+            'allowed_updates' => ['message', 'my_chat_member'],
+        ]));
+    }
+
+    /** @return array<string, mixed> */
+    public function getChat(string|int $chatId): array
+    {
+        return (array) $this->call('getChat', ['chat_id' => $chatId]);
+    }
+
+    public function leaveChat(string|int $chatId): void
+    {
+        $this->call('leaveChat', ['chat_id' => $chatId]);
     }
 }

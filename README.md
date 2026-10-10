@@ -26,7 +26,7 @@ tests/         PHP CLI testlar: php tests/run.php
 
 Qadam-baqadam: [`docs/DEPLOY.md`](docs/DEPLOY.md). Qo'lda sinov ro'yxati: [`docs/TESTING.md`](docs/TESTING.md).
 
-Qisqacha: cPanel Git Version Control → subdomen docroot `jahonoro/public` → MySQL + `database/migrations/*.sql` import → `config/config.php` → `/api/ping` → cron har 5 daqiqa → ilovada Sozlamalar → "Guruhga tugma yuborish".
+Qisqacha: cPanel Git Version Control → subdomen docroot `jahonoro/public` → MySQL + `database/migrations/*.sql` import → `config/config.php` → `/api/ping` → cron har 5 daqiqa → ilovada Sozlamalar → "Guruhni ulash" (guruh tanlanadi, bot admin bo'ladi, tugma pin qilinadi).
 
 ## Hosting sinovi (0-bosqich)
 

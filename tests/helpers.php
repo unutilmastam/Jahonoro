@@ -23,6 +23,9 @@ final class FakeBotApi extends BotApi
 
     public ?TelegramException $failWith = null;
 
+    /** @var list<array<string, mixed>> getUpdates navbati */
+    public array $updates = [];
+
     private int $nextMessageId = 500;
 
     public function __construct()
@@ -42,6 +45,7 @@ final class FakeBotApi extends BotApi
                 ? ['status' => $this->members[$params['user_id']], 'user' => ['id' => $params['user_id']]]
                 : throw new TelegramException(400, 'Bad Request: user not found'),
             'sendMessage' => ['message_id' => $this->nextMessageId++, 'chat' => ['id' => $params['chat_id']]],
+            'getUpdates' => array_values(array_filter($this->updates, fn (array $u): bool => $u['update_id'] >= $params['offset'])),
             default => true,
         };
     }

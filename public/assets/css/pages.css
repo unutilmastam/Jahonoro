@@ -392,3 +392,46 @@
 .settings-system {
   margin-top: var(--sp-8);
 }
+
+.group-empty__body {
+  padding: var(--sp-4) var(--sp-4) 0;
+}
+
+.group-empty__title {
+  font-weight: 600;
+}
+
+.group-empty__text {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  color: var(--text-2);
+}
+
+.group-empty__action {
+  padding: var(--sp-4);
+}
+
+.link-steps {
+  margin: 0;
+  padding-left: var(--sp-5);
+  display: grid;
+  gap: var(--sp-3);
+  color: var(--text-2);
+}
+
+.link-steps li::marker {
+  font-family: var(--font-display);
+  color: var(--gold-text);
+}
+
+.link-status {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+  padding: var(--sp-3);
+  border-radius: var(--r-control);
+  background: var(--surface-2);
+  font-size: var(--fs-label);
+}

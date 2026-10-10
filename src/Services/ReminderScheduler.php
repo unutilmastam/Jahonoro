@@ -24,7 +24,7 @@ final class ReminderScheduler
         private readonly SettingsRepo $settings,
         private readonly BotApi $bot,
         private readonly MessageBuilder $messages,
-        private readonly string $groupChatId,
+        private string $groupChatId,
     ) {
     }
 
@@ -120,7 +120,7 @@ final class ReminderScheduler
             return 'cancelled';
         }
         if ($this->groupChatId === '') {
-            $this->reminders->markFailed($id, $claim, 'GROUP_CHAT_ID sozlanmagan', false);
+            $this->reminders->markFailed($id, $claim, 'Guruh ulanmagan', false);
             return 'failed';
         }
 
@@ -130,6 +130,13 @@ final class ReminderScheduler
             $this->reminders->markSent($id, $claim, isset($result['message_id']) ? (int) $result['message_id'] : null);
             return 'sent';
         } catch (TelegramException $e) {
+            if ($e->migrateToChatId !== null) {
+                // Guruh supergroup'ga aylangan: yangi ID saqlanadi, eslatma keyingi cron'da yuboriladi
+                $this->groupChatId = (string) $e->migrateToChatId;
+                $this->settings->set('group_chat_id', $this->groupChatId);
+                $this->reminders->markFailed($id, $claim, 'Guruh ID yangilandi', false);
+                return 'failed';
+            }
             $final = !$e->isRetryable();
             $this->reminders->markFailed($id, $claim, ($e->errorCode > 0 ? $e->errorCode . ': ' : '') . $e->description, $final);
             Logger::warning('reminder_send_failed', ['reminder_id' => $id, 'code' => $e->errorCode, 'final' => $final]);

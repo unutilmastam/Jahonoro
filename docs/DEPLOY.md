@@ -34,7 +34,7 @@ Kerakli branch `main`. Ish boshqa branchda bo'lsa, avval GitHub'da Pull Request 
 
 cPanel → **Domains** (yoki **Subdomains**) → **Create**:
 
-- Subdomen: masalan `jahonoro.itcode.uz`
+- Subdomen: `jahonoro.itcode.uz`
 - Document Root: `jahonoro/public`
 
 So'ng **SSL/TLS Status** → **Run AutoSSL**. Brauzerda `https://jahonoro.itcode.uz` ochilishi va qulf belgisi chiqishi kerak.
@@ -55,9 +55,9 @@ So'ng **SSL/TLS Status** → **Run AutoSSL**. Brauzerda `https://jahonoro.itcode
 
 1. Telegram'da **@BotFather** → `/newbot` → nom va username (masalan `@JahonoroBot`). Token'ni saqlang, hech kimga bermang.
 2. `/newapp` → botni tanlang → nom, tavsif, rasm (640×360) → Web App URL: `https://jahonoro.itcode.uz` → short name: `jadval`. BotFather `https://t.me/JahonoroBot/jadval` ko'rinishidagi havolani beradi — bu **MINI_APP_LINK**.
-3. Botni JAHONORO guruhiga qo'shing va **admin** qiling. Kerakli huquq faqat "Xabarlarni pin qilish" (Pin messages).
-4. Guruhga istalgan xabar yozing. Brauzerda `https://api.telegram.org/bot<TOKEN>/getUpdates` ni oching va `"chat":{"id":-100...` qiymatini toping — bu **GROUP_CHAT_ID**.
-5. O'zingizning Telegram ID'ingiz: **@userinfobot** ga yozing — bu **OWNER_TELEGRAM_ID**.
+3. O'zingizning Telegram ID'ingiz: **@userinfobot** ga yozing — bu **OWNER_TELEGRAM_ID**.
+4. Botni guruhga hozir qo'shmang — buni 9-qadamda ilovaning o'zi qiladi.
+5. Botda webhook bo'lmasligi kerak (yangi botda yo'q). Ilgari boshqa joyda ishlatilgan bo'lsa, brauzerda bir marta oching: `https://api.telegram.org/bot<TOKEN>/deleteWebhook`.
 
 ## 6. config.php
 
@@ -74,7 +74,7 @@ cPanel → **File Manager** → `jahonoro/config/`:
 'DB_PASS' => '…',
 'BOT_TOKEN' => '123456789:AA…',
 'OWNER_TELEGRAM_ID' => 123456789,
-'GROUP_CHAT_ID' => '-100…',
+'GROUP_CHAT_ID' => '',          // bo'sh qoldiring — guruh ilovadan ulanadi
 'APP_URL' => 'https://jahonoro.itcode.uz',
 'MINI_APP_LINK' => 'https://t.me/JahonoroBot/jadval',
 'TIMEZONE' => 'Asia/Tashkent',
@@ -116,9 +116,10 @@ PHP yo'li hostingda boshqacha bo'lishi mumkin. MultiPHP Manager'da tanlangan ver
 
 ## 9. Birinchi kirish
 
-1. Telegram'da `MINI_APP_LINK` havolasini oching. Siz owner bo'lib kirasiz (ID config'dagi bilan bir xil).
-2. Sozlamalar → **Guruhga tugma yuborish**. Bot guruhga "📅 TO‘YLAR JADVALI" tugmali xabar yuborib, uni pin qiladi.
-3. A'zolar shu tugmani bosadi. Birinchi marta ochganda ular "So‘rovingiz yuborildi" xabarini ko'radi. Sozlamalar → A'zolar ro'yxatida oltin nuqta bilan chiqadi, siz **Tasdiqlash** ni bosasiz.
+1. Telegram'da `MINI_APP_LINK` havolasini oching. Siz owner bo'lib kirasiz (ID config'dagi bilan bir xil). Bosh sahifada "Guruh hali ulanmagan" qatori ko'rinadi.
+2. Sozlamalar → Guruh → **Guruhni ulash** → **Telegram’da guruhni tanlash**. Telegram guruh tanlash oynasini ochadi: yopiq JAHONORO guruhini tanlang, botni admin qilib qo'shishni tasdiqlang (faqat "Xabarlarni pin qilish" huquqi).
+3. Ilovaga qayting — bir necha soniyada "“JAHONORO” ulandi" chiqadi, bot guruhga "📅 TO‘YLAR JADVALI" tugmali xabar yuborib, uni pin qiladi. Kod 30 daqiqa amal qiladi; ulguring olmasangiz tugmani qayta bosing.
+4. A'zolar shu tugmani bosadi. Birinchi marta ochganda ular "So‘rovingiz yuborildi" xabarini ko'radi. Sozlamalar → A'zolar ro'yxatida oltin nuqta bilan chiqadi, siz **Tasdiqlash** ni bosasiz.
 
 ## 10. Yakuniy sinov
 

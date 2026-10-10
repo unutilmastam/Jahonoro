@@ -60,5 +60,8 @@ return static function (Router $r): void {
 
     $r->post('/events/{id}/remind-now', [$reminders, 'remindNow']);
     $r->get('/reminders/status', [$reminders, 'status']);
+    $r->get('/group', [$group, 'show']);
+    $r->post('/group/link', [$group, 'link']);
+    $r->post('/group/link/check', [$group, 'check']);
     $r->post('/group/publish-button', [$group, 'publishButton']);
 };

@@ -24,11 +24,12 @@ return [
     // Rahbarning Telegram ID raqami (owner)
     'OWNER_TELEGRAM_ID' => 0,
 
-    // Guruh ID'si, odatda -100 bilan boshlanadi (getUpdates → chat.id)
+    // Ixtiyoriy. Guruh ilovaning o'zidan ulanadi (Sozlamalar → Guruh → Guruhni ulash).
+    // Bu yerga faqat zaxira sifatida -100... ID yoziladi; ilovadan ulangan guruh ustun turadi.
     'GROUP_CHAT_ID' => '',
 
     // Ilova manzili (subdomen), oxirida / yo'q
-    'APP_URL' => 'https://jahonoro.example.uz',
+    'APP_URL' => 'https://jahonoro.itcode.uz',
 
     // BotFather /newapp Direct Link, masalan https://t.me/JahonoroBot/jadval
     'MINI_APP_LINK' => '',
